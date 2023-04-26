@@ -1063,8 +1063,7 @@ var txt = "  I'm Ron Wilson, a multi-disciplinary Project Coordinator, web devel
  
  var txt2 = "  After the school closed, I ventured into e-commerce, initially selling phone accessories and later expanding to curved computer monitors. Leveraging my skills in web development, video editing, and online marketing, I sold over 50 miles of elastic for mask-making during the pandemic. I am always on the lookout for opportunities to grow my business. "+ b;
 
-var txt3 = "  I have a passion for web development that started with creating custom layouts for friends on Myspace using HTML and CSS. In this portfolio, I used my skills in HTML, CSS, and Java Script to create this presentation. "+'<p>'+ '<br>'+ " If you'd like to learn more about my experience or have a project you'd like to discuss, please don't hesitate to reach out. ";
-
+var txt3 = "  I have a passion for web development that started with creating custom layouts for friends on Myspace using HTML and CSS. In this portfolio, I used my skills in HTML, CSS, and Java Script to create this presentation. "+ b + " If you'd like to learn more about my experience or have a project you'd like to discuss, please don't hesitate to reach out. ";
 var speed = 20;
 
 
@@ -1127,8 +1126,15 @@ window.scrollTo(0, document.body.scrollHeight);
   loadingFunc();
 
  		}
-		
-		  
+		   if(ii == txt2.length && runBool == "YES"){
+ document.getElementById("about-text").innerHTML += " <br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
+ ii++;
+ runBool = "NO"
+ speed = 5;
+ document.getElementById("msg-text_a").innerHTML = 'Loading Even More! ';
+  loadingFunc();
+ 		}
+	
    if(iiii == txt3.length && runBool == "YES"){
 // document.getElementById("about-text").innerHTML += '<br> ';
  iiii++;
