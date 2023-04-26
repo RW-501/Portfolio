@@ -70,7 +70,7 @@
   </div>
   <!-- Buttons section -->
   <div id="contactLKn"><a href="https://www.linkedin.com/in/lrpinc/" target="_blank">Contact Me On Linkedin</a></div> <!-- Link to LinkedIn profile -->
-  <div id="resumeBtns" class="resumeBtns">
+  <div id="resumeBtns" class="resumeBtns" hidden>
     <div><a href="RESUME2023.pdf" download><i class="fa fa-download"></i> Resume</a></div> <!-- Button to download the resume -->
     <div><a href="../Portfolio/RESUME2023.pdf"><i class="fa fa-eye"></i> Resume</a></div> <!-- Button to view the resume -->
   </div>
@@ -393,27 +393,34 @@ Video Marketing Ad video
 	    </div>
     </div>
 
-<!-- Third box -->
-<div class="box_insideT">
-    <div class="box_50T">
-        <!-- Use lazy loading for iframes -->
-        <iframe class="lazyload lazy" src="images/load.gif" data-src="images/work/bballcom.mp4" frameborder="0" allowfullscreen style="width: -webkit-fill-available;"></iframe>
-    </div>
-    <div class="box_textT">
+
+    <!-- bball video -->
+    <div class="box_insideT">
+        <div class="box_50T">
+            <!-- This is a video that will play when the user clicks on it -->
+            <video id="" style="width: -webkit-fill-available;" controls playsinline>
+                <source src="images/work/bballcom.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>      
+        </div>
+        <div class="box_textT">
         Basketball combine promo video “Cut”
-    </div>   
-</div>  
-	
-<!-- Third box -->
-<div class="box_insideT">
-    <div class="box_50T">
-        <!-- Use lazy loading for iframes -->
-        <iframe class="lazyload lazy" src="images/load.gif" data-src="images/work/intro.mp4" frameborder="0" allowfullscreen style="width: -webkit-fill-available;"></iframe>
+        </div>
     </div>
-    <div class="box_textT">
+	
+    <!-- intro video -->
+    <div class="box_insideT">
+        <div class="box_50T">
+            <!-- This is a video that will play when the user clicks on it -->
+            <video id="" style="width: -webkit-fill-available;" controls playsinline>
+                <source src="images/work/intro.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>      
+        </div>
+        <div class="box_textT">
         Event Promo Video - Custom Intro/Outro
-    </div>   
-</div>  
+        </div>
+    </div>
 	
 
 <!-- Second box -->
@@ -1045,7 +1052,7 @@ var ii = 0;
 var iii = 0;
 var b = '\n';
 		
- var txt3 = '\n'+ "  I have a passion for web development that started with creating custom layouts for friends on Myspace using HTML and CSS. In this portfolio, I used my skills in HTML, CSS, and Java Script to create this presentation. "+'\n'+ '\n'+ " If you'd like to learn more about my experience or have a project you'd like to discuss, please don't hesitate to reach out. ";
+ var txt3 = '<p>'+ "  I have a passion for web development that started with creating custom layouts for friends on Myspace using HTML and CSS. In this portfolio, I used my skills in HTML, CSS, and Java Script to create this presentation. "+'<p>'+ '<br>'+ " If you'd like to learn more about my experience or have a project you'd like to discuss, please don't hesitate to reach out. ";
 
 var txt = "  I'm Ron Wilson, a multi-disciplinary Project Coordinator, web developer, and video editor with experience in various industries. Originally from Conway, Arkansas, I moved to Dallas, Texas in 2007 to pursue my studies in computer graphics."+b;
 
