@@ -149,15 +149,6 @@
 </article>
 
 
-<?php
-// Get referrer URL
-$refURL = $_SERVER['HTTP_REFERER'];
-// Get user IP address
-$user_ip = getenv('REMOTE_ADDR');
-?>
-<!-- Hidden input fields to store user IP and referrer URL -->
-<input id="ipA" value='<?php echo $user_ip; ?>' hidden="YES">
-<input id="refURL" value='<?php echo $refURL; ?>' hidden="YES">
 
 <!-- Work section with clickable links -->
 <article id="work" class="scroll-reveal box1 right">
@@ -225,15 +216,6 @@ $user_ip = getenv('REMOTE_ADDR');
     </div>
 </div> 
 
-<div class="box_insideT">
-    <!-- Second box: unknown content -->
-    <div class="box_50T">
-        <!-- Unknown content -->
-    </div>
-    <div class="box_textT">
-        Unknown content
-    </div>   
-</div> 
 
 <div class="box_insideT">
     <!-- Third box: jQuery drag and drop -->
@@ -255,26 +237,7 @@ $user_ip = getenv('REMOTE_ADDR');
     </div>
 </div>   
 
-<div class="box_insideT">
-    <!-- Fifth box: MyLinks.buzz demo -->
-    <div class="box_50T">
-        <a href="https://www.mylinks.buzz/Login/index.php" >
-            <img src="images/logo.jpg" alt="" style="width: -webkit-fill-available;">
-        </a>
-    </div>
-    <div class="box_textT">
-        <p>Frontend and Backend Developer used HTML, CSS, PHP, jQuery, Java Script and SQL</p>
-        <br>Demo Account: 
-        <br> 
-        <div id="demoBtn" onClick="window.location.href='../Login/index.php?a=DEMO';">View Demo Account</div>
-        <div> OR</div>
-        <div id="copyDiv">
-            <!-- Demo account credentials -->
-            <input type="text" onClick="copytextFunc(this);" value="Demo-User">
-            <input type="text" onClick="copytextFunc(this);" value="Demo123">
-        </div>
-    </div>
-</div>     
+
 
                                 
                                 
@@ -362,12 +325,6 @@ $user_ip = getenv('REMOTE_ADDR');
     
     <!-- Sixth box -->
     <div class="box_insideT">
-        <div class="box_50T">
-           
-                 
-              
-      <div class="box_insideT">
-
       <div class="box_50T">
  <img onClick="viewImageFunc(this,'gfx');"  src="images/beyouDone.gif" alt="" style="width: -webkit-fill-available;">
    </div>
