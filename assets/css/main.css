@@ -81,6 +81,7 @@ input, select, textarea {
 .resumeBtns{
     margin: auto;
     display: inline-flex;
+	display:none !important;
 	}
 
 .resumeBtns > div{
