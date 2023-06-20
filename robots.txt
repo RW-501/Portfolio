@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /private/
+Disallow: /temp/
+Disallow: /admin/
+
+Sitemap: https://rw-501.github.io/Portfolio/sitemap.xml
