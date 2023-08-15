@@ -18,7 +18,18 @@
     font-weight: 900;
 
 }
-
+.fa fa-briefcase {
+    font-size: 3vw;
+    margin: auto;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    text-align: center;
+    height: fit-content;
+}
 
 
 html, body, div, span, applet, object,
@@ -217,7 +228,7 @@ input, select, textarea {
 		font-weight: 300;
 		font-size: 1rem;
 		line-height: 1.65;
-		    overflow: hidden;
+		    overflow: scroll;
 	}
 
 	a {
