@@ -232,19 +232,19 @@
   <div class="content">
     <div class="inner">
       <h1 class="Title-text-center">Ronald Wilson II</h1> <!-- Main heading of the website -->
-      <h3 class="text"><a href="#work">Welcome To My Portfolio.</a></h3> <!-- Tagline of the website -->
+      <h3 class="text"><a href="#work" onClick="getCurrentViewFunc('See Portfolio');">Welcome To My Portfolio.</a></h3> <!-- Tagline of the website -->
     </div>
   </div>
-  <!-- Navigation section -->
+  <!-- Navigation section -->  
     <nav>
     <ul>
-      <li><a href="https://rw-501.github.io/Portfolio/#about" onClick="typeWriter();">About Me</a></li> <!-- Link to the "About Me" section -->
-      <li><a href="https://rw-501.github.io/Portfolio/#work">See Projects</a></li> <!-- Link to the "Work" section -->
-      <li><a href="https://rw-501.github.io/Portfolio/#bizz">Business</a></li> <!-- Link to the "Business" section -->
+      <li><a href="https://rw-501.github.io/Portfolio/#about" onClick="typeWriter(); getCurrentViewFunc('About Me');">About Me</a></li> <!-- Link to the "About Me" section -->
+      <li><a href="https://rw-501.github.io/Portfolio/#work" onClick="getCurrentViewFunc('See Portfolio');">See Projects</a></li> <!-- Link to the "Work" section -->
+      <li><a href="https://rw-501.github.io/Portfolio/#bizz" onClick="getCurrentViewFunc('View Business');">Business</a></li> <!-- Link to the "Business" section -->
     </ul>
     <ul>
-      <li><a href="https://www.linkedin.com/in/lrpinc/">Add Me On Linkedin</a></li> <!-- Link to LinkedIn profile -->
-      <li><a href="https://rw-501.github.io/Portfolio/#projects">Active Projects</a></li> <!-- Link to the "Contact Me" section -->
+      <li><a href="https://www.linkedin.com/in/lrpinc/" onClick="getCurrentViewFunc('View Linkedin');">Add Me On Linkedin</a></li> <!-- Link to LinkedIn profile -->
+      <li><a href="https://rw-501.github.io/Portfolio/#projects" onClick="getCurrentViewFunc('Active Projects');">Active Projects</a></li> <!-- Link to the "Contact Me" section -->
     </ul>
   </nav>
 </header>
@@ -268,7 +268,7 @@
 	
 	
   <!-- "Play Again" button section -->
-  <div id="playAgain" onClick="playAgain();">
+  <div id="playAgain" onClick="playAgain(); getCurrentViewFunc('playAgain');">
     <div class="loading">again<span>.</span><span>.</span><span>.</span></div>
   </div>
 </article>
@@ -422,19 +422,19 @@
 <!-- Work section with clickable links -->
 <article id="work" class="scroll-reveal box1 right">
     <!-- Link to Web Development Work section -->
-    <a href="#web">		
+    <a href="#web" onClick="getCurrentViewFunc("See Web Development Work");>		
         <h2 class="major"><div class="Title-text-left-long">&lt;Web Development Work&gt;</div></h2>
         <span class="image main"><img src="images/codeWork.jpg" alt="" /></span>
     </a>								
                                 
     <!-- Link to Post Production Work section -->
-    <a href="#post">		
+    <a href="#post" onClick="getCurrentViewFunc("See Post Production Work");>		
         <h2 class="major"><div class="Title-text-left-long">Post Production Work</div></h2>
         <span class="image main"><img src="images/EditWork.jpg" alt="" /></span>
     </a>	
                                
     <!-- Link to Graphic Work section -->
-    <a href="#gfx">		
+    <a href="#gfx" onClick="getCurrentViewFunc("See Graphic Work");>		
         <h2 class="major"><div class="Title-text-left">Graphic Work</div></h2>
         <span class="image main"><img src="images/gfxwork.jpg" alt="" /></span>
     </a>	            
@@ -1105,9 +1105,10 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 
 <script>
 
-
+window.addEventListener('beforeunload', function(event) {
+getCurrentViewFunc("Guest Exit");
+});
  var ipAddress = '';
-
 
 
 const firebaseConfig = {
@@ -1266,6 +1267,8 @@ function scrollFunction() {
 function topFunc() {
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
+
+	 getCurrentViewFunc("Scrolled to top");
 }
 
 				
