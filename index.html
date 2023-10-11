@@ -1426,36 +1426,36 @@ var fallBool = "NO";
 
 var runBool = "YES";
 
+const timers = [];  // Array to store timer IDs
+
 function typeWriterRun() {
-	
-   if(i == 0){
- document.getElementById("about-text").innerHTML += ' <i class="fa fa-code" style="font-size:48px;color:#afafaf"></i>&nbsp;&nbsp;&nbsp;   ';
- 		}
-		
-  if (i < txt.length && runBool == "YES") {
-    document.getElementById("about-text").innerHTML += txt.charAt(i);
-    i++;
-    setTimeout(typeWriterRun, speed);
-  }else   if (ii < txt1.length && runBool == "YES") {
-    document.getElementById("about-text").innerHTML += txt1.charAt(ii);
-    ii++;
-    setTimeout(typeWriterRun, speed);
-window.scrollTo(0, document.body.scrollHeight);
+    if (i == 0) {
+        document.getElementById("about-text").innerHTML += ' <i class="fa fa-code" style="font-size:48px;color:#afafaf"></i>&nbsp;&nbsp;&nbsp;';
+    }
 
-  }else   if (iii < txt2.length && runBool == "YES") {
-    document.getElementById("about-text").innerHTML += txt2.charAt(iii);
-    iii++;
-    setTimeout(typeWriterRun, speed);
-window.scrollTo(0, document.body.scrollHeight);
+    if (i < txt.length && runBool === "YES") {
+        document.getElementById("about-text").innerHTML += txt.charAt(i);
+        i++;
+        timers.push(setTimeout(typeWriterRun, speed));
+        window.scrollTo(0, document.body.scrollHeight);
+    } else if (ii < txt1.length && runBool === "YES") {
+        document.getElementById("about-text").innerHTML += txt1.charAt(ii);
+        ii++;
+        timers.push(setTimeout(typeWriterRun, speed));
+        window.scrollTo(0, document.body.scrollHeight);
+    } else if (iii < txt2.length && runBool === "YES") {
+        document.getElementById("about-text").innerHTML += txt2.charAt(iii);
+        iii++;
+        timers.push(setTimeout(typeWriterRun, speed));
+        window.scrollTo(0, document.body.scrollHeight);
+    } else if (iiii < txt3.length && runBool === "YES") {
+        document.getElementById("about-text").innerHTML += txt3.charAt(iiii);
+        iiii++;
+        timers.push(setTimeout(typeWriterRun, speed));
+        window.scrollTo(0, document.body.scrollHeight);
+    }
 
-  }else   if (iiii < txt3.length && runBool == "YES") {
-    document.getElementById("about-text").innerHTML += txt3.charAt(iiii);
-    iiii++;
-    setTimeout(typeWriterRun, speed);
-window.scrollTo(0, document.body.scrollHeight);
 
-  }
-  
 
   
    if(i == txt.length && runBool == "YES"){
@@ -1513,6 +1513,38 @@ var texEnd = "<i class='fa fa-code' style='font-size:5vw;color:#afafaf'></i>";
 		
 }
 
+function stopTimers() {
+    for (const timerId of timers) {
+        clearTimeout(timerId);
+    }
+    timers.length = 0;  // Clear the timers array
+}
+
+  
+const targetElement = document.getElementById('about');
+
+const observer = new MutationObserver((mutationsList) => {
+  for (const mutation of mutationsList) {
+    if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+      const displayValue = targetElement.style.display;
+      if (displayValue === 'none') {
+        // The display property is now 'none'
+        console.log('Element with ID "about" is now hidden.');
+        // Call your function or perform actions when the element is hidden
+        stopTimers();
+      }
+    }
+  }
+});
+
+// Configure the observer to watch for style attribute changes
+observer.observe(targetElement, { attributes: true });
+
+// To disconnect the observer when you no longer need it
+// observer.disconnect();
+
+
+		
 function loadingFunc() {
 //console.log("    loadingFunc?????loadingFunc????????????  ");
 window.scrollTo(0, document.body.scrollHeight);
