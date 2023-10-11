@@ -1108,28 +1108,6 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 
  var ipAddress = '';
 
-async function getIPAddress() {
-  // This approach uses a third-party API to fetch the user's IP address
-  if (ipAddress === '') {
-    return fetch('https://api.ipify.org')
-      .then(response => response.text())
-      .then(data => {
-        // Extract the IP address from the response
-        ipAddress = data.trim();
-        console.log("IP Address:", ipAddress);
-
-        return ipAddress;
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        return null;
-      });
-  } else {
-    return ipAddress;
-  }
-}
-
-getIPAddress();
 
 
 const firebaseConfig = {
@@ -1156,7 +1134,7 @@ const firebaseConfig = {
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0');
     const day = String(now.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+    return `${month}/${day}/${year}`;
   }
 
 
@@ -1187,7 +1165,29 @@ const db = firebase.firestore();
 }
 		
 
+async function getIPAddress() {
+  // This approach uses a third-party API to fetch the user's IP address
+  if (ipAddress === '') {
+    return fetch('https://api.ipify.org')
+      .then(response => response.text())
+      .then(data => {
+        // Extract the IP address from the response
+        ipAddress = data.trim();
+        console.log("IP Address:", ipAddress);
 getCurrentViewFunc("");
+
+        return ipAddress;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        return null;
+      });
+  } else {
+    return ipAddress;
+  }
+}
+
+getIPAddress();
 
 
 
