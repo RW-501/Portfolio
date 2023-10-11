@@ -1098,34 +1098,96 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 
 
 
+  <!-- Firebase SDK -->
+  <script  src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script  src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script  src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
 <script>
 
 
+ var ipAddress = '';
+
+async function getIPAddress() {
+  // This approach uses a third-party API to fetch the user's IP address
+  if (ipAddress === '') {
+    return fetch('https://api.ipify.org')
+      .then(response => response.text())
+      .then(data => {
+        // Extract the IP address from the response
+        ipAddress = data.trim();
+        console.log("IP Address:", ipAddress);
+
+        return ipAddress;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        return null;
+      });
+  } else {
+    return ipAddress;
+  }
+}
+
+getIPAddress();
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC8PYJV5-E6hIYbElsgb5e7MOS0faCiLM4",
+  authDomain: "quizzatopia-bdfc9.firebaseapp.com",
+  projectId: "quizzatopia-bdfc9",
+  storageBucket: "quizzatopia-bdfc9.appspot.com",
+  messagingSenderId: "828105067102",
+  appId: "1:828105067102:web:76afb989ed7c03ebb542cf",
+  measurementId: "G-J3QK9V5480"
+};
+
+
+  firebase.initializeApp(firebaseConfig);
+  const firestore = firebase.firestore();
+
+
+
+
+	
+  // Function to get the current date in YYYY-MM-DD format
+  function getCurrentDate() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+
+
 		function getCurrentViewFunc(xxx){
-
-var refURL = document.getElementById('refURL').value;
-var ipA = document.getElementById('ipA').value;
-				var currentURL =window.location.href;
-	//console.log(ipA+"    semdMessageFunc?????????  "+currentURL);
+if(xxx === ""){
+let xxx = "Home";
+}
+let currentDate = getCurrentDate();
+let currentURL = window.location.href;
 	
-	
-	
-			 	$.post("/ron-s_portfolio/viewed.php",  {ip:ipA,url:currentURL,rURL:refURL}, function(output) {
-					//output = output.trim();
+const db = firebase.firestore();
+    const logEntry = {
+        ipAddress,
+        currentDate,
+        xxx,
+        currentURL,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    };
+    // Add the log entry to a Firestore collection
+    db.collection("ronPortfolio").add(logEntry)
+        .then(() => {
+            console.log("User movement logged successfully.");
+        })
+        .catch((error) => {
+            console.error("Error logging user movement:", error);
+        });
+}
+		
 
-		if(output){
-
-//console.log(ipA+' ip  '+output+"    output  ??????????????? currentURL:  "+currentURL);
-
-
-		}
-});			
-
-
-		}
-
-getCurrentViewFunc();
+getCurrentViewFunc("");
 
 
 
