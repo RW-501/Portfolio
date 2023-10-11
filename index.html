@@ -1145,11 +1145,13 @@ let xxx = "Home";
 }
 let currentDate = getCurrentDate();
 let currentURL = window.location.href;
-	
+const referrerURL = document.referrer;
+
 const db = firebase.firestore();
     const logEntry = {
         ipAddress,
         currentDate,
+        referrerURL,
         xxx,
         currentURL,
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
