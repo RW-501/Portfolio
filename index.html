@@ -1218,8 +1218,8 @@ db.collection("ronPortfolio")
   .then(querySnapshot => {
     if (!querySnapshot.empty) {
       // User exists, update the existing document with the new page view
-      const docId = querySnapshot.docs[0].id;
-      const docRef = db.collection("ronPortfolio").doc(docId);
+     // const docId = querySnapshot.docs[0].id;
+      const docRef = db.collection("ronPortfolio").doc(ipAddress);
 
       docRef.get().then(doc => {
         if (doc.exists) {
