@@ -1198,16 +1198,18 @@ const db = firebase.firestore();
 		*/
 
 // Function to log user's actions
-function getCurrentViewFunc(xxx) {
+function getCurrentViewFunc(page) {
 const db = firebase.firestore();
 
   let currentDate = getCurrentDate();
   const currentURL = window.location.href;
   const referrerURL = document.referrer;
 
-
+if(page === ""){
+let page = "Home";
+}
 const logEntry = {
-  xxx,
+  page,
   timestamp: firebase.firestore.Timestamp.fromDate(new Date())
 };
 
@@ -1246,6 +1248,7 @@ db.collection("ronPortfolio")
       const newUserLog = {
         ipAddress,
         currentDate,
+        currentURL,
         referrerURL,
         viewed: [logEntry]
       };
