@@ -1208,6 +1208,7 @@ const logEntry = {
   xxx,
   timestamp: firebase.firestore.FieldValue.serverTimestamp()
 };
+const db = firebase.firestore();
 
 // Check if the user's IP address already exists in the database
 db.collection("ronPortfolio")
