@@ -1139,13 +1139,13 @@ const firebaseConfig = {
   }
 
 
-
+/*
 		function getCurrentViewFunc(xxx){
 if(xxx === ""){
 let xxx = "Home";
 }
 let currentDate = getCurrentDate();
-let currentURL = window.location.href;
+const  currentURL = window.location.href;
 const referrerURL = document.referrer;
 
 const db = firebase.firestore();
@@ -1166,7 +1166,64 @@ const db = firebase.firestore();
             console.error("Error logging user movement:", error);
         });
 }
-		
+		*/
+
+// Function to log user's actions
+function getCurrentViewFunc(xxx) {
+
+  let currentDate = getCurrentDate();
+  const currentURL = window.location.href;
+  const referrerURL = document.referrer;
+
+  const logEntry = {
+    xxx,
+    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+  };
+
+  // Check if the user's IP address already exists in the database
+  db.collection("ronPortfolio")
+    .where("ipAddress", "==", ipAddress)
+    .get()
+    .then(querySnapshot => {
+      if (!querySnapshot.empty) {
+        // Update the existing document with the new page view
+        const docId = querySnapshot.docs[0].id;
+        db.collection("ronPortfolio").doc(docId).update({
+          viewed: firebase.firestore.FieldValue.arrayUnion(logEntry)
+        })
+        .then(() => {
+          console.log("Page view logged successfully.");
+        })
+        .catch(error => {
+          console.error("Error logging page view:", error);
+        });
+      } else {
+        // Create a new document for the user's IP address
+        const newUserLog = {
+          ipAddress,
+          currentDate,
+          referrerURL,
+          viewed: [logEntry]
+        };
+
+        db.collection("ronPortfolio").add(newUserLog)
+          .then(() => {
+            console.log("User log created successfully.");
+          })
+          .catch(error => {
+            console.error("Error creating user log:", error);
+          });
+      }
+    })
+    .catch(error => {
+      console.error("Error checking user existence:", error);
+    });
+}
+
+
+
+
+	
 
 async function getIPAddress() {
   // This approach uses a third-party API to fetch the user's IP address
