@@ -1206,11 +1206,11 @@ const db = firebase.firestore();
   const currentURL = window.location.href;
   const referrerURL = document.referrer;
 
-if(page === ""){
+if(page === "" || page === null  ){
 let page = "Home";
 }
 const logEntry = {
-  page,
+  page:page,
   timestamp: firebase.firestore.Timestamp.fromDate(new Date())
 };
 
