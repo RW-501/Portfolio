@@ -1199,16 +1199,17 @@ const db = firebase.firestore();
 
 // Function to log user's actions
 function getCurrentViewFunc(xxx) {
+const db = firebase.firestore();
 
   let currentDate = getCurrentDate();
   const currentURL = window.location.href;
   const referrerURL = document.referrer;
 
+
 const logEntry = {
   xxx,
-  timestamp: firebase.firestore.FieldValue.serverTimestamp()
+  timestamp: firebase.firestore.Timestamp.fromDate(new Date())
 };
-const db = firebase.firestore();
 
 // Check if the user's IP address already exists in the database
 db.collection("ronPortfolio")
