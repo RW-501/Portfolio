@@ -21,6 +21,11 @@ footer{
     display: block;
 }
 
+.social-links ul {
+
+    display: inline-flex;
+}
+
 .fa-briefcase{
 font-size:3.5rem;
 	}
