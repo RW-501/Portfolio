@@ -21,7 +21,7 @@ footer{
     display: block;
 }
 
-.social-links ul {
+.social-links < ul {
 list-style: none  !important;
     display: inline-flex;
 }
