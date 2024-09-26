@@ -23,11 +23,12 @@ footer{
 
 /* Ensure correct targeting */
 .social-links ul {
-    list-style: none !important; /* Removes bullet points */
-    display: flex; /* Use flex for better support and consistency */
-    gap: 10px; /* Adds space between the list items */
-    padding: 0; /* Removes any default padding */
-    margin: 0; /* Removes default margin */
+list-style: none !important;
+    display: ruby-text;
+    gap: 10px;
+    padding: 0;
+    margin: auto;
+    width: 100%;
 }
 
 /* Optional styling for list items */
