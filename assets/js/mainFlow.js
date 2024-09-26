@@ -260,8 +260,8 @@ const speed = 20;
 const textSections = [
     "I'm Ron Wilson, a multi-disciplinary Project Coordinator, web developer, and video editor with experience in various industries. Originally from Conway, Arkansas, I moved to Dallas, Texas in 2007 to pursue my studies in computer graphics.",
     "My professional career began at a charter school where I worked in the business department as an Administrative Assistant. During my 10-year tenure, I wore many hats and implemented various systems, from setting up audiovisual to coordinating the operations of two cafeterias that fed over 1200 students daily.",
-    "After the school closed, I ventured into e-commerce, initially selling phone accessories and later expanding to curved computer monitors. Leveraging my skills in web development, video editing, and online marketing, I sold over 50 miles of elastic for mask-making during the pandemic. I am always on the lookout for opportunities to grow my business.",
-    "I have a passion for web development that started with creating custom layouts for friends on Myspace using HTML and CSS. In this portfolio, I used my skills in HTML, CSS, and JavaScript to create this presentation. If you'd like to learn more about my experience or have a project you'd like to discuss, please don't hesitate to reach out!"
+    "After the school closed, I ventured into e-commerce, initially selling phone accessories and expanding to curved computer monitors. Leveraging my skills in web development, video editing, and online marketing, I sold over 50 miles of elastic for mask-making during the pandemic. I am always on the lookout for opportunities to grow my business.",
+    "I have a passion for web development that started with creating custom layouts for friends on Myspace using HTML and CSS. In this portfolio, I used my HTML, CSS, and JavaScript skills to create this presentation. If you'd like to learn more about my experience or have a project you'd like to discuss, please don't hesitate to reach out!"
 ];
 
 function typeWriter(text, elementId, callback) {
