@@ -22,7 +22,7 @@ footer{
 }
 
 .social-links ul {
-
+list-style: none  !important;
     display: inline-flex;
 }
 
