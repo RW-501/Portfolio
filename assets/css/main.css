@@ -6,6 +6,12 @@
 
 /* main.css */
 
+footer{
+    z-index: 200;
+    display: block;
+    margin: auto;
+    position: absolute;
+}
 
 .fa-briefcase{
 font-size:3.5rem;
