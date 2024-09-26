@@ -8,9 +8,17 @@
 
 footer{
     z-index: 200;
-    display: block;
+    display: initial;
     margin: auto;
     position: absolute;
+    width: 100%;
+    text-align: center;
+
+}
+.footer-links{
+
+    margin: auto;
+    display: block;
 }
 
 .fa-briefcase{
