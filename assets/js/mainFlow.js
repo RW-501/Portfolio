@@ -147,7 +147,7 @@ function scrollFunction() {
 function topFunc() {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
-    getCurrentViewFunc("Scrolled to top");
+    logPageView("Scrolled to top");
 }
 
 // Image Modal Functionality
