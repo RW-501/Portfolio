@@ -1,24 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Home Page -->
   <url>
     <loc>https://rw-501.github.io/Portfolio/</loc>
     <priority>1.0</priority>
+    <changefreq>daily</changefreq>
   </url>
+
+  <!-- About Section -->
   <url>
     <loc>https://rw-501.github.io/Portfolio/#about</loc>
     <priority>0.8</priority>
+    <changefreq>weekly</changefreq>
   </url>
+
+  <!-- Work Section -->
   <url>
     <loc>https://rw-501.github.io/Portfolio/#work</loc>
     <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
   </url>
+
+  <!-- Business Section -->
   <url>
     <loc>https://rw-501.github.io/Portfolio/#bizz</loc>
     <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
   </url>
+
+  <!-- Projects Section -->
   <url>
     <loc>https://rw-501.github.io/Portfolio/#projects</loc>
     <priority>0.8</priority>
+    <changefreq>weekly</changefreq>
   </url>
-</urlset>
 
+  <!-- LinkedIn Profile -->
+  <url>
+    <loc>https://www.linkedin.com/in/lrpinc/</loc>
+    <priority>0.6</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+
+  <!-- Contact Me Section -->
+  <url>
+    <loc>https://rw-501.github.io/Portfolio/#ContactMe</loc>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <!-- Maximus Brand Business Link -->
+  <url>
+    <loc>https://www.maximusbrand.com</loc>
+    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+
+  <!-- QuizzaTopia Platform -->
+  <url>
+    <loc>https://rw-501.github.io/quizzatopia.com/</loc>
+    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+
+  <!-- ShutterWorx Photography Business -->
+  <url>
+    <loc>https://shutterworx.co</loc>
+    <priority>0.7</priority>
+    <changefreq>daily</changefreq>
+  </url>
+
+  <!-- ReelCareer Job Board -->
+  <url>
+    <loc>https://reelcareer.co/</loc>
+    <priority>0.7</priority>
+    <changefreq>daily</changefreq>
+  </url>
+
+</urlset>
