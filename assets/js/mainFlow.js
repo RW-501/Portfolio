@@ -199,9 +199,19 @@ async function logPageView(page) {
 
 // Sanitize input by removing dangerous content
 function sanitizeInput(input) {
+    // Check for null or undefined inputs
+    if (input == null) {
+        return '';
+    }
+
+    // Create a temporary div element
     const element = document.createElement("div");
-    element.textContent = input;  // This ensures no HTML or script tags are injected
-    return element.innerHTML;  // Returns the sanitized value
+    
+    // Use textContent to ensure input is sanitized by encoding special characters
+    element.textContent = input;
+    
+    // Return the sanitized content as a string
+    return element.innerHTML;
 }
 
 
@@ -328,32 +338,89 @@ const textSections = [
     "I have a passion for web development that started with creating custom layouts for friends on Myspace using HTML and CSS. In this portfolio, I used my HTML, CSS, and JavaScript skills to create this presentation. If you'd like to learn more about my experience or have a project you'd like to discuss, please don't hesitate to reach out!"
 ];
 
+
 function typeWriter(text, elementId, callback) {
     const element = document.getElementById(elementId);
+    
+    if (!element) {
+        console.error(`Element with ID "${elementId}" not found.`);
+        return;  // If the element is not found, stop the function.
+    }
+    
     if (i < text.length) {
         element.innerHTML += text.charAt(i);
         i++;
         setTimeout(() => typeWriter(text, elementId, callback), speed);
     } else {
-        callback();
+        callback();  // Call the callback function after typing is finished.
     }
 }
 
 function startTyping() {
-    typeWriter(textSections[0], "text1", () => {
-        setTimeout(() => {
-            typeWriter(textSections[1], "text2", () => {
-                setTimeout(() => {
-                    typeWriter(textSections[2], "text3", () => {
-                        setTimeout(() => {
-                            typeWriter(textSections[3], "text4", () => {});
-                        }, 500);
-                    });
-                }, 500);
-            });
-        }, 500);
-    });
+    if (Array.isArray(textSections) && textSections.length > 0) {
+        typeWriter(textSections[0], "text1", () => {
+            setTimeout(() => {
+                typeWriter(textSections[1], "text2", () => {
+                    setTimeout(() => {
+                        typeWriter(textSections[2], "text3", () => {
+                            setTimeout(() => {
+                                typeWriter(textSections[3], "text4", () => {});
+                            }, 500);
+                        });
+                    }, 500);
+                });
+            }, 500);
+        });
+    } else {
+        console.error("textSections array is invalid or empty.");
+    }
 }
 
-startTyping();
 
+function typeWriter(text, elementId, callback) {
+    const element = document.getElementById(elementId);
+    
+    if (!element) {
+        console.error(`Element with ID "${elementId}" not found.`);
+        return;  // If the element is not found, stop the function.
+    }
+    
+    if (i < text.length) {
+        element.innerHTML += text.charAt(i);
+        i++;
+        setTimeout(() => typeWriter(text, elementId, callback), speed);
+    } else {
+        callback();  // Call the callback function after typing is finished.
+    }
+}
+
+function startTyping() {
+    if (Array.isArray(textSections) && textSections.length > 0) {
+        typeWriter(textSections[0], "text1", () => {
+            setTimeout(() => {
+                typeWriter(textSections[1], "text2", () => {
+                    setTimeout(() => {
+                        typeWriter(textSections[2], "text3", () => {
+                            setTimeout(() => {
+                                typeWriter(textSections[3], "text4", () => {});
+                            }, 500);
+                        });
+                    }, 500);
+                });
+            }, 500);
+        });
+    } else {
+        console.error("textSections array is invalid or empty.");
+    }
+}
+/*
+// Assuming textSections is an array of text you want to type out
+const textSections = [
+    "This is the first section of text.",
+    "Here's the second section of text.",
+    "And now the third section appears.",
+    "Finally, the fourth section finishes."
+];
+
+startTyping();
+*/
