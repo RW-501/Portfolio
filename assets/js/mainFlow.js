@@ -138,6 +138,9 @@ function typeWriter(text, elementId, callback) {
 
 function startTyping() {
     if (Array.isArray(textSections) && textSections.length > 0) {
+        const remove = document.getElementById("remove");
+        remove.style.display = "none";
+
         typeWriter(textSections[0], "text1", () => {
             setTimeout(() => {
                 typeWriter(textSections[1], "text2", () => {
