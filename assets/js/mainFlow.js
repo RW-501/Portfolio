@@ -121,7 +121,8 @@ const textSections = [
 
 function typeWriter(text, elementId, callback) {
     const element = document.getElementById(elementId);
-    
+    console.log("Page element ",element);
+
     if (!element) {
         console.error(`Element with ID "${elementId}" not found.`);
         return;  // If the element is not found, stop the function.
