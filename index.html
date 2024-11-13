@@ -123,27 +123,27 @@
   <div class="content">
     <div class="inner">
       <h1 class="Title-text-center">Ronald Wilson II</h1> <!-- Adding keyword-rich main heading for SEO -->
-      <h2 class="subtitle"><a href="#work" onClick="logPageView('See Portfolio');">Portfoio <br> Explore My Work and Projects</a></h2> <!-- Tagline with SEO-rich keywords -->
+      <h2 class="subtitle"><a href="#work" >Portfoio <br> Explore My Work and Projects</a></h2> <!-- Tagline with SEO-rich keywords -->
     </div>
   </div>
 
   <!-- Portfolio Navigation Section for Easy Access to Work Categories -->
   <nav aria-label="Portfolio Navigation">
     <ul class="portfolio-nav">
-      <li><a href="#web" onClick="logPageView('Web Development Work Home');" title="Explore Web Development Projects">Web Development</a></li> 
-      <li><a href="#post" onClick="logPageView('Post Production Work Home');" title="Explore Post Production Work">Post Production</a></li> 
-      <li><a href="#gfx" onClick="logPageView('Graphic Work Home');" title="Explore Graphic Design Projects">Graphic Design</a></li> 
+      <li><a href="#web"  title="Explore Web Development Projects">Web Development</a></li> 
+      <li><a href="#post"  title="Explore Post Production Work">Post Production</a></li> 
+      <li><a href="#gfx"  title="Explore Graphic Design Projects">Graphic Design</a></li> 
     </ul>
   </nav>
 
   <!-- Main Navigation Section with Detailed Titles and ARIA Labels -->
   <nav aria-label="Main Site Navigation">
     <ul class="main-nav">
-      <li><a href="https://rw-501.github.io/Portfolio/#about" onClick="typeWriter(); logPageView('About Me');" title="Learn More About Ronald Wilson II">About Me</a></li> <!-- Link with descriptive title for SEO -->
-      <li><a href="https://rw-501.github.io/Portfolio/#work" onClick="logPageView('See Portfolio');" title="View My Portfolio Projects">Projects</a></li> <!-- More precise title for SEO -->
-      <li><a href="https://rw-501.github.io/Portfolio/#bizz" onClick="logPageView('View Business');" title="Explore My Business Ventures">Business</a></li> <!-- Link to business section with SEO title -->
-      <li><a href="https://www.linkedin.com/in/lrpinc/" onClick="logPage('ViewLinkedIn');" title="Connect with Ronald Wilson II on LinkedIn">LinkedIn</a></li> <!-- LinkedIn profile link with SEO title -->
-      <li><a href="https://rw-501.github.io/Portfolio/#projects" onClick="logPageView('Active Projects');" title="Explore Ongoing Projects by Ronald Wilson II">Active Projects</a></li> <!-- Projects link with SEO title -->
+      <li><a href="https://rw-501.github.io/Portfolio/#about"  title="Learn More About Ronald Wilson II">About Me</a></li> <!-- Link with descriptive title for SEO -->
+      <li><a href="https://rw-501.github.io/Portfolio/#work" title="View My Portfolio Projects">Projects</a></li> <!-- More precise title for SEO -->
+      <li><a href="https://rw-501.github.io/Portfolio/#bizz" title="Explore My Business Ventures">Business</a></li> <!-- Link to business section with SEO title -->
+      <li><a href="https://www.linkedin.com/in/lrpinc/"  title="Connect with Ronald Wilson II on LinkedIn">LinkedIn</a></li> <!-- LinkedIn profile link with SEO title -->
+      <li><a href="https://rw-501.github.io/Portfolio/#projects"  title="Explore Ongoing Projects by Ronald Wilson II">Active Projects</a></li> <!-- Projects link with SEO title -->
     </ul>
   </nav>
 </header>
@@ -238,7 +238,7 @@
     <!-- Contact form actions -->
     <ul class="actions">
       <li>
-        <div onClick="//semdMessageFunc();" id="contactSubmitBtn" >
+        <div  id="contactSubmitBtn" >
           Send Message
         </div>
       </li>
@@ -543,6 +543,88 @@
 			
 			<div id="bg"></div>
 
+
+
+      <script>
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Header Logo Click Event
+  document.querySelector('.logo a').addEventListener('click', () => {
+    logPageView('Homepage');
+  });
+
+  // Portfolio Subtitle Click Event
+  document.querySelector('.subtitle a').addEventListener('click', () => {
+    logPageView('See Portfolio');
+  });
+
+  // Portfolio Navigation Links Click Events
+  const portfolioLinks = {
+    web: 'Web Development Work Home',
+    post: 'Post Production Work Home',
+    gfx: 'Graphic Work Home'
+  };
+
+  for (const [id, viewName] of Object.entries(portfolioLinks)) {
+    document.querySelector(`a[href="#${id}"]`).addEventListener('click', () => {
+      logPageView(viewName);
+    });
+  }
+
+  // Main Navigation Links Click Events
+  const mainNavLinks = {
+    about: 'About Me',
+    work: 'See Portfolio',
+    bizz: 'View Business',
+    linkedin: 'ViewLinkedIn',
+    projects: 'Active Projects'
+  };
+
+  for (const [id, viewName] of Object.entries(mainNavLinks)) {
+    const selector = id === 'linkedin' 
+      ? 'a[href*="linkedin.com"]'
+      : `a[href="#${id}"]`;
+    document.querySelector(selector).addEventListener('click', () => {
+      if (id === 'about') {
+        typeWriter();
+      }
+      logPageView(viewName);
+    });
+  }
+});
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Contact form elements
+  const contactForm = document.getElementById('contactForm');
+  const contactSubmitBtn = document.getElementById('contactSubmitBtn');
+  const resetButton = contactForm.querySelector('input[type="reset"]');
+
+  // Submit button event listener
+  contactSubmitBtn.addEventListener('click', function () {
+    semdMessageFunc();
+  });
+
+  // Reset button event listener for form reset action
+  resetButton.addEventListener('click', function () {
+    // Optional: Add a reset action confirmation if desired
+    console.log("Form reset");
+  });
+
+  // Example additional event listeners
+  document.getElementById('contactName').addEventListener('input', function () {
+    // Optional: Live validation or other feedback logic for 'Name' field
+    console.log("Name field changed:", this.value);
+  });
+
+  document.getElementById('contactMessage').addEventListener('input', function () {
+    // Optional: Live feedback for message text area
+    console.log("Message field changed:", this.value);
+  });
+});
+
+      </script>
 		<!-- Scripts href="RESUME2022c.pdf" download -->
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/browser.min.js"></script>
