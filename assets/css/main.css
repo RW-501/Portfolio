@@ -1391,6 +1391,18 @@ input, select, textarea {
 		line-height: calc(2.75rem - 2px);
 	}
 
+
+
+	footer{
+	z-index: 100 !important;
+    display: block;
+    color: white;
+    /* background-color: black; */
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
 /* BG */
 
 	#bg {
