@@ -5,6 +5,25 @@ import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-
 
 // Firebase configuration
 
+
+
+        // Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyCsitF_YPDGnMwK0xIk2tUgQXJnxS2HN_o",
+          authDomain: "ron-main.firebaseapp.com",
+          projectId: "ron-main",
+          storageBucket: "ron-main.appspot.com",
+          messagingSenderId: "885898378176",
+          appId: "1:885898378176:web:ee850a5c980b4417a2a625",
+          measurementId: "G-Y16GN7VL5Q"
+      };
+  
+
+
+
+
+
+
 // Initialize Firebase and services
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
