@@ -133,7 +133,7 @@
         </p>
         <ul class="portfolio-nav">
           <li>
-            <a href="https://rw-501.github.io/Portfolio/#web" title="Explore Web Development Projects by Ronald Wilson II">
+            <a href="#web" title="Explore Web Development Projects by Ronald Wilson II">
               Web Development
             </a>
             <div id="web-description" class="section-description" style="display: none;">
@@ -141,7 +141,7 @@
             </div>
           </li>
           <li>
-            <a href="https://rw-501.github.io/Portfolio/#post" title="Explore Post Production Work by Ronald Wilson II">
+            <a href="#post" title="Explore Post Production Work by Ronald Wilson II">
               Post Production
             </a>
             <div id="post-description" class="section-description" style="display: none;">
@@ -149,7 +149,7 @@
             </div>
           </li>
           <li>
-            <a href="https://rw-501.github.io/Portfolio/#gfx" title="Explore Graphic Design Projects by Ronald Wilson II">
+            <a href="#gfx" title="Explore Graphic Design Projects by Ronald Wilson II">
               Graphic Design
             </a>
             <div id="gfx-description" class="section-description" style="display: none;">
@@ -162,12 +162,12 @@
       <!-- Main Navigation Section with Detailed Titles and ARIA Labels -->
       <nav aria-label="Main Site Navigation">
         <ul class="main-nav">
-          <li><a href="https://rw-501.github.io/Portfolio/#about" title="Learn More About Ronald Wilson II">About Me</a></li> <!-- Link with descriptive title for SEO -->
-          <li><a href="https://rw-501.github.io/Portfolio/#work" title="View My Portfolio Projects">Projects</a></li> <!-- More precise title for SEO -->
-          <li><a href="https://rw-501.github.io/Portfolio/#bizz" title="Explore My Business Ventures">Business</a></li> <!-- Link to business section with SEO title -->
+          <li><a href="#about" title="Learn More About Ronald Wilson II">About Me</a></li> <!-- Link with descriptive title for SEO -->
+          <li><a href="jects">Projects</a></li> <!-- More precise title for SEO -->
+          <li><a href="#bizz" title="Explore My Business Ventures">Business</a></li> <!-- Link to business section with SEO title -->
           <li><a href="https://www.linkedin.com/in/lrpinc/" title="Connect with Ronald Wilson II on LinkedIn">LinkedIn</a></li> <!-- LinkedIn profile link with SEO title -->
-          <li><a href="https://rw-501.github.io/Portfolio/#projects" title="Explore Ongoing Projects by Ronald Wilson II">Active Projects</a></li> <!-- Projects link with SEO title -->
-          <li><a href="https://rw-501.github.io/Portfolio/#ContactMe" title="Get in Touch with Ronald Wilson II for Professional Inquiries" aria-label="Contact Ronald Wilson II">Contact Me</a></li>
+          <li><a href="#projects" title="Explore Ongoing Projects by Ronald Wilson II">Active Projects</a></li> <!-- Projects link with SEO title -->
+          <li><a href="#ContactMe" title="Get in Touch with Ronald Wilson II for Professional Inquiries" aria-label="Contact Ronald Wilson II">Contact Me</a></li>
         </ul>
       </nav>
     </header>
@@ -888,7 +888,7 @@ window.addEventListener('load', function() {
         gfx: 'Graphic Work Home'
       };
       for (const [id, viewName] of Object.entries(portfolioLinks)) {
-        document.querySelector(`a[href="${id}"]`).addEventListener('click', () => {
+        document.querySelector(`a[href="#${id}"]`).addEventListener('click', () => {
           logPageView(viewName);
           console.log("Page ",viewName);
         });
@@ -899,12 +899,13 @@ window.addEventListener('load', function() {
         work: 'See Portfolio',
         bizz: 'View Business',
         linkedin: 'ViewLinkedIn',
-        projects: 'Active Projects'
+        projects: 'Active Projects',
+        ContactMe: 'Contat Me'
       };
       for (const [id, viewName] of Object.entries(mainNavLinks)) {
         const selector = id === 'linkedin' ?
           'a[href*="linkedin.com"]' :
-          `a[href="${id}"]`;
+          `a[href="#${id}"]`;
         document.querySelector(selector).addEventListener('click', () => {
           if (id === 'about') {
             typeWriter();
