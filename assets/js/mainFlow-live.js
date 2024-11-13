@@ -67,7 +67,8 @@ export async function logPageView(page) {
       browser: getBrowser(userAgent), // Get browser info
       operatingSystem: getOS(userAgent), // Get OS info
     };
-  
+    console.log("logEntry ",logEntry);
+
     try {
       // Try to find a record with the IP address
       const querySnapshot = await db.collection("portfolioAnalytics")
