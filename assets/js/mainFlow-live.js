@@ -1,99 +1,101 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js";
+import { 
+  initializeApp 
+} from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+import { 
+  getFirestore, collection, query, where, getDocs, doc, updateDoc, addDoc, arrayUnion 
+} from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
 
-// Firebase configuration
+// Initialize Firebase and Firestore
+const firebaseConfig = {
+  apiKey: "AIzaSyCsitF_YPDGnMwK0xIk2tUgQXJnxS2HN_o",
+  authDomain: "ron-main.firebaseapp.com",
+  projectId: "ron-main",
+  storageBucket: "ron-main.appspot.com",
+  messagingSenderId: "885898378176",
+  appId: "1:885898378176:web:ee850a5c980b4417a2a625",
+  measurementId: "G-Y16GN7VL5Q"
+};
 
-
-
-        // Firebase configuration
-        const firebaseConfig = {
-          apiKey: "AIzaSyCsitF_YPDGnMwK0xIk2tUgQXJnxS2HN_o",
-          authDomain: "ron-main.firebaseapp.com",
-          projectId: "ron-main",
-          storageBucket: "ron-main.appspot.com",
-          messagingSenderId: "885898378176",
-          appId: "1:885898378176:web:ee850a5c980b4417a2a625",
-          measurementId: "G-Y16GN7VL5Q"
-      };
-  
-
-
-
-
-
-
-// Initialize Firebase and services
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 const db = getFirestore(app);
-const analytics = getAnalytics(app);
 
-
-
-  let ipAddress = '';
-  
-  // Page View Log
-// Firestore Analytics Function
-export async function logPageView(page) {
-    const currentDate = getCurrentDate();
-    const ipAddress = await getIPAddress(); // Ensure IP is fetched asynchronously
-    
-    // Calculate time on page by storing timestamp when the page loads
-    const startTime = new Date().getTime();
-  
-    // Get user's device, browser info, and referral data
-    const userAgent = navigator.userAgent;
-    const deviceType = getDeviceType(userAgent); // Device detection (mobile, tablet, desktop)
-    const referral = document.referrer || 'direct'; // Referral URL
-    const screenWidth = window.screen.width;
-    const screenHeight = window.screen.height;
-  
-    // Wait for the page unload or interval to capture time on page
-    const endTime = new Date().getTime();
-    const timeOnPage = (endTime - startTime) / 1000; // Time in seconds
-  
-    const logEntry = {
-      page,
-      userAgent,
-      currentDate,
-      referral,
-      deviceType,
-      timeOnPage,
-      screenWidth,
-      screenHeight,
-      browser: getBrowser(userAgent), // Get browser info
-      operatingSystem: getOS(userAgent), // Get OS info
-    };
-    console.log("logEntry ",logEntry);
-
-    try {
-      // Try to find a record with the IP address
-      const querySnapshot = await db.collection("portfolioAnalytics")
-        .where("ipAddress", "==", ipAddress)
-        .get();
-  
-      if (!querySnapshot.empty) {
-        const docRef = db.collection("portfolioAnalytics").doc(querySnapshot.docs[0].id);
-        // Append the log entry to the viewed array
-        await docRef.update({
-          viewed: firebase.firestore.FieldValue.arrayUnion(logEntry)
-        });
-      } else {
-        // If no document found, create a new record
-        await db.collection("portfolioAnalytics").add({
-          ipAddress,
-          currentDate,
-          viewed: [logEntry],
-          sessions: [] // Adding session tracking (this can be enhanced further later)
-        });
-      }
-    } catch (error) {
-      console.error("Error logging page view:", error);
-    }
+// Update logPageView function
+const getUserLocationByIP = async (ip) => { 
+  try {
+      const response = await fetch(`${locationAPI}/${ip}/json/`);
+      const data = await response.json();
+      return {
+          city: data.city || 'N/A',
+          state: data.region || 'N/A',
+          zip: data.postal || 'N/A',
+          country: data.country_name || 'N/A'
+      };
+  } catch (error) {
+      console.error('Error fetching location by IP:', error);
+      return null;
   }
-  
+};
+
+// Update logPageView function
+export async function logPageView(page) {
+const currentDate = getCurrentDate();
+const ipAddress = await getIPAddress();
+const startTime = new Date().getTime();
+const userAgent = navigator.userAgent;
+const deviceType = getDeviceType(userAgent);
+const referral = document.referrer || 'direct';
+const screenWidth = window.screen.width;
+const screenHeight = window.screen.height;
+const endTime = new Date().getTime();
+const timeOnPage = (endTime - startTime) / 1000;
+
+// Get location data based on IP address
+const locationData = await getUserLocationByIP(ipAddress);
+
+const logEntry = {
+  page,
+  userAgent,
+  currentDate,
+  referral,
+  deviceType,
+  timeOnPage,
+  screenWidth,
+  screenHeight,
+  browser: getBrowser(userAgent),
+  operatingSystem: getOS(userAgent),
+  ipAddress,           // Log IP address directly
+  location: locationData  // Include location data in the log entry
+};
+
+console.log("logEntry ", logEntry);
+
+try {
+  // Query to find a document with the same IP address
+  const portfolioAnalyticsRef = collection(db, "portfolioAnalytics");
+  const q = query(portfolioAnalyticsRef, where("ipAddress", "==", ipAddress));
+  const querySnapshot = await getDocs(q);
+
+  if (!querySnapshot.empty) {
+    // If an entry with this IP address exists, update it
+    const docRef = doc(db, "portfolioAnalytics", querySnapshot.docs[0].id);
+    await updateDoc(docRef, {
+      viewed: arrayUnion(logEntry)
+    });
+  } else {
+    // If no matching entry, create a new one
+    await addDoc(portfolioAnalyticsRef, {
+      ipAddress,
+      currentDate,
+      viewed: [logEntry],
+      sessions: []
+    });
+  }
+} catch (error) {
+  console.error("Error logging page view:", error);
+}
+}
+
+
   // Get Current Date in MM/DD/YYYY Format
   function getCurrentDate() {
     const now = new Date();
@@ -165,58 +167,71 @@ export async function logPageView(page) {
   
   
   // Contact Form Submission
-  export async  function sendMessageFunc(event) { 
-    event.preventDefault();
-    const currentDate = getCurrentDate();
-
-    // Get user input
-    const contactName = sanitizeInput(document.getElementById("name").value);
-    const contactEmail = sanitizeInput(document.getElementById("email").value);
-    const contactMessage = sanitizeInput(document.getElementById("message").value);
-
-    // Prepare the message object to send to Firestore
-    const messageData = {
-        name: contactName,
-        email: contactEmail,
-        message: contactMessage,
-        ipAddress: ipAddress,
-        currentDate: currentDate
-    };
-
-    try {
-        // Save the message to Firestore (portfolioContact collection)
-        await db.collection("portfolioContact").add(messageData);
-
-        // Show success message to the user
-        const msgPop = document.getElementById("msgPop");
-        const msgText = document.getElementById("msg-text_a");
-        
-        msgText.innerHTML = "Thank you for your message! I'll get back to you soon. Add me on LinkedIn.";
-        msgPop.style.display = "block";
-
-        // Reset the form and hide the message after a delay
-        setTimeout(() => {
-            msgPop.style.display = "none";
-            document.getElementById("contactForm").reset();
-        }, 10000);
-
-    } catch (error) {
-        console.error("Error sending message:", error);
-
-        // Show error message to the user
-        const msgPop = document.getElementById("msgPop");
-        const msgText = document.getElementById("msg-text_a");
-        
-        msgText.innerHTML = "There was an error. Please try again later.";
-        msgPop.style.display = "block";
-
-        setTimeout(() => {
-            msgPop.style.display = "none";
-            removeContactMSGFunc();
-        }, 10000);
-    }
-}
-
+  import { 
+    collection, addDoc 
+  } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
+  
+  // Function to send message and save to Firestore
+  export async function sendMessageFunc(event) { 
+      event.preventDefault();
+      const currentDate = getCurrentDate();
+  
+      // Get user input
+      const contactName = sanitizeInput(document.getElementById("name").value);
+      const contactEmail = sanitizeInput(document.getElementById("email").value);
+      const contactMessage = sanitizeInput(document.getElementById("message").value);
+      const ipAddress = await getIPAddress();
+  
+      // Get location data based on IP address
+      const locationData = await getUserLocationByIP(ipAddress);
+  
+      // Prepare the message object to send to Firestore
+      const messageData = {
+          name: contactName,
+          email: contactEmail,
+          message: contactMessage,
+          ipAddress: ipAddress,
+          location: locationData,
+          currentDate: currentDate
+      };
+  
+      try {
+          // Reference the portfolioContact collection
+          const portfolioContactRef = collection(db, "portfolioContact");
+          
+          // Save the message to Firestore
+          await addDoc(portfolioContactRef, messageData);
+  
+          // Show success message to the user
+          const msgPop = document.getElementById("msgPop");
+          const msgText = document.getElementById("msg-text_a");
+          
+          msgText.innerHTML = "Thank you for your message! I'll get back to you soon. Add me on LinkedIn.";
+          msgPop.style.display = "block";
+  
+          // Reset the form and hide the message after a delay
+          setTimeout(() => {
+              msgPop.style.display = "none";
+              document.getElementById("contactForm").reset();
+          }, 10000);
+  
+      } catch (error) {
+          console.error("Error sending message:", error);
+  
+          // Show error message to the user
+          const msgPop = document.getElementById("msgPop");
+          const msgText = document.getElementById("msg-text_a");
+          
+          msgText.innerHTML = "There was an error. Please try again later.";
+          msgPop.style.display = "block";
+  
+          setTimeout(() => {
+              msgPop.style.display = "none";
+              removeContactMSGFunc();
+          }, 10000);
+      }
+  }
+  
 // Sanitize input by removing dangerous content
 function sanitizeInput(input) {
     // Check for null or undefined inputs
