@@ -890,6 +890,7 @@ window.addEventListener('load', function() {
       for (const [id, viewName] of Object.entries(portfolioLinks)) {
         document.querySelector(`a[href="#${id}"]`).addEventListener('click', () => {
           logPageView(viewName);
+          console.log("Page ",viewName);
         });
       }
       // Main Navigation Links Click Events
