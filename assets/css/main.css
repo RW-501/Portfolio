@@ -1569,7 +1569,7 @@ input, select, textarea {
 			position: relative;
 			margin-top: 3.5rem;
 		}
-
+/*
 			#header > *:before {
 				content: '';
 				display: block;
@@ -1580,7 +1580,7 @@ input, select, textarea {
 				height: calc(3.5rem + 1px);
 				background: #ffffff;
 			}
-
+*/
 		#header > :first-child {
 			margin-top: 0;
 		}
@@ -1674,7 +1674,7 @@ input, select, textarea {
 					#header nav ul li a:active {
 						background-color: rgba(255, 255, 255, 0.175);
 					}
-
+/*
 		#header nav.use-middle:after {
 			content: '';
 			display: block;
@@ -1685,7 +1685,7 @@ input, select, textarea {
 			height: 100%;
 			background: #ffffff;
 		}
-
+*/
 		#header nav.use-middle ul li.is-middle {
 			border-left: 0;
 		}
