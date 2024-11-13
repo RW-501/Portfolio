@@ -117,7 +117,49 @@
     </style>
 </head>
 
-<body>
+Here's how your complete structure would look with the Manage Websites section, analytics and contact sections, and the SEO-enhanced website header. This includes the header navigation, analytics, contact messages, and the websites management section.
+
+html
+Copy code
+<!-- Header Section -->
+<header id="header">
+    <!-- Logo Section with Optimized Link Title for SEO -->
+    <div class="logo" style="position: relative;">
+        <a href="https://rw-501.github.io/Portfolio/" title="Ronald Wilson II's Portfolio Homepage" aria-label="Homepage">
+            <span class="fa fa-briefcase" style="position: absolute; left: 0; right: 0; bottom: 0; top: 10%;"></span>
+        </a>
+    </div>
+
+    <!-- Content Section with Primary Headings for SEO -->
+    <div class="content">
+        <div class="inner">
+            <h1 class="Title-text-center">Ronald Wilson II</h1> <!-- SEO-rich main heading -->
+            <h2 class="subtitle"><a href="#work">Portfolio <br> Explore My Work and Projects</a></h2> <!-- Tagline with SEO-rich keywords -->
+        </div>
+    </div>
+
+    <!-- Portfolio Navigation Section for Easy Access to Work Categories -->
+    <nav aria-label="Portfolio Navigation">
+        <ul class="portfolio-nav">
+            <li><a href="#web" title="Explore Web Development Projects">Web Development</a></li>
+            <li><a href="#post" title="Explore Post Production Work">Post Production</a></li>
+            <li><a href="#gfx" title="Explore Graphic Design Projects">Graphic Design</a></li>
+        </ul>
+    </nav>
+    <body>
+
+    <!-- Main Navigation Section with Detailed Titles and ARIA Labels -->
+    <nav aria-label="Main Site Navigation">
+        <ul class="main-nav">
+            <li><a href="https://rw-501.github.io/Portfolio/#about" title="Learn More About Ronald Wilson II">About Me</a></li>
+            <li><a href="https://rw-501.github.io/Portfolio/#work" title="View My Portfolio Projects">Projects</a></li>
+            <li><a href="https://rw-501.github.io/Portfolio/#bizz" title="Explore My Business Ventures">Business</a></li>
+            <li><a href="https://www.linkedin.com/in/lrpinc/" title="Connect with Ronald Wilson II on LinkedIn">LinkedIn</a></li>
+            <li><a href="https://rw-501.github.io/Portfolio/#projects" title="Explore Ongoing Projects by Ronald Wilson II">Active Projects</a></li>
+        </ul>
+    </nav>
+
+
     <!-- Login Section -->
     <div id="login-section">
         <h2>Admin Login</h2>
@@ -286,6 +328,27 @@
             });
         }
 
+
+
+   // JavaScript functions for handling website actions
+   function updateWebsite(websiteId) {
+        const status = document.getElementById(`status-${websiteId}`).value;
+        const keywords = document.getElementById(`keywords-${websiteId}`).value;
+        alert(`Updated ${websiteId}: Status - ${status}, Keywords - ${keywords}`);
+        
+        // AJAX request to update the status and keywords in the database
+    }
+
+    function deleteWebsite(websiteId) {
+        if (confirm(`Are you sure you want to delete ${websiteId}?`)) {
+            alert(`Deleted ${websiteId}`);
+            
+            // AJAX request to delete the website from the database
+        }
+    }
+
+
+    
 </script>
 
 
