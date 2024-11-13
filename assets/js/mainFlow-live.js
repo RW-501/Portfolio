@@ -166,7 +166,7 @@ export async function logPageView(page) {
   
   
   // Contact Form Submission
-  async function sendMessageFunc(event) { 
+  export async  function sendMessageFunc(event) { 
     event.preventDefault();
 
     // Get user input
@@ -179,12 +179,12 @@ export async function logPageView(page) {
         name: contactName,
         email: contactEmail,
         message: contactMessage,
+        ipAddress: ipAddress,
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     };
 
     try {
         // Save the message to Firestore (portfolioContact collection)
-        const db = firebase.firestore();
         await db.collection("portfolioContact").add(messageData);
 
         // Show success message to the user
@@ -212,6 +212,7 @@ export async function logPageView(page) {
 
         setTimeout(() => {
             msgPop.style.display = "none";
+            removeContactMSGFunc();
         }, 10000);
     }
 }
