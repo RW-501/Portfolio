@@ -852,6 +852,25 @@
   <div id="bg"></div>
 
   <script defer>
+
+
+
+// Event listener for the "About Me" link
+document.getElementById('aboutLink').addEventListener('click', function(event) {
+    // Check if the URL has the '#about' fragment
+    if (window.location.hash === '#about') {
+        startTyping();
+    }
+});
+
+// Check if the current page URL has '#about' on page load
+window.addEventListener('load', function() {
+    if (window.location.hash === '#about') {
+        startTyping();
+    }
+});
+
+
     document.addEventListener('DOMContentLoaded', function() {
       // Header Logo Click Event
       document.querySelector('.logo a').addEventListener('click', () => {

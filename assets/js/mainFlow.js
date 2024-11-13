@@ -116,42 +116,7 @@ const textSections = [
 ];
 
 
-function typeWriter(text, elementId, callback) {
-    const element = document.getElementById(elementId);
-    
-    if (!element) {
-        console.error(`Element with ID "${elementId}" not found.`);
-        return;  // If the element is not found, stop the function.
-    }
-    
-    if (i < text.length) {
-        element.innerHTML += text.charAt(i);
-        i++;
-        setTimeout(() => typeWriter(text, elementId, callback), speed);
-    } else {
-        callback();  // Call the callback function after typing is finished.
-    }
-}
 
-function startTyping() {
-    if (Array.isArray(textSections) && textSections.length > 0) {
-        typeWriter(textSections[0], "text1", () => {
-            setTimeout(() => {
-                typeWriter(textSections[1], "text2", () => {
-                    setTimeout(() => {
-                        typeWriter(textSections[2], "text3", () => {
-                            setTimeout(() => {
-                                typeWriter(textSections[3], "text4", () => {});
-                            }, 500);
-                        });
-                    }, 500);
-                });
-            }, 500);
-        });
-    } else {
-        console.error("textSections array is invalid or empty.");
-    }
-}
 
 
 function typeWriter(text, elementId, callback) {
