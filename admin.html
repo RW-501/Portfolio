@@ -5,32 +5,138 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+
+    <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js"></script>
+
+    <!-- Custom Stylesheet -->
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Basic Reset and Body Styles */
+        body, h2, h3, button, table {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        /* Container for Admin Dashboard */
+        #login-section, #admin-dashboard {
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Login Section */
+        #login-section h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        #google-login-btn {
+            background-color: #4285F4;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #google-login-btn:hover {
+            background-color: #357AE8;
+        }
+
+        /* Admin Dashboard */
+        #admin-dashboard h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        #admin-dashboard p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        /* Button Container */
+        #admin-dashboard button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            margin: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #admin-dashboard button:hover {
+            background-color: #45a049;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f4f7f6;
+        }
+
+        /* Section Visibility */
+        #analytics-section, #contact-messages {
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
+    <!-- Login Section -->
     <div id="login-section">
         <h2>Admin Login</h2>
         <button id="google-login-btn">Login with Google</button>
     </div>
 
+    <!-- Admin Dashboard Section -->
     <div id="admin-dashboard" style="display:none;">
         <h2>Admin Dashboard</h2>
         <p>Welcome, <span id="admin-name"></span></p>
-        
+
         <div>
             <button id="view-analytics-btn">View Analytics</button>
             <button id="manage-social-media-btn">Manage Social Media</button>
             <button id="manage-websites-btn">Manage Websites</button>
             <button id="read-contact-btn">Read Contact Messages</button>
         </div>
-        
+
         <!-- Analytics Section -->
-        <div id="analytics-section" style="display:none;">
+        <div id="analytics-section">
             <h3>Analytics Data</h3>
             <table id="analyticsTable">
                 <thead>
@@ -51,7 +157,7 @@
         </div>
 
         <!-- Contact Messages Section -->
-        <div id="contact-messages" style="display:none;">
+        <div id="contact-messages">
             <h3>Contact Messages</h3>
             <table id="contactTable">
                 <thead>
@@ -68,8 +174,14 @@
         </div>
     </div>
 
+          <!-- Firebase SDK -->
+  <script  src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script  src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script  src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+			<script src="assets/js/mainFlow.js"></script>
+    <!-- Firebase Initialization -->
     <script>
-        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCsitF_YPDGnMwK0xIk2tUgQXJnxS2HN_o",
             authDomain: "ron-main.firebaseapp.com",
@@ -79,7 +191,6 @@
             appId: "1:885898378176:web:ee850a5c980b4417a2a625",
             measurementId: "G-Y16GN7VL5Q"
         };
-
         const app = firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore(app);
@@ -92,7 +203,6 @@
                 const result = await auth.signInWithPopup(provider);
                 const user = result.user;
                 if (user.email === '1988lrp@gmail.com') {
-                    // Admin Login Successful
                     document.getElementById('login-section').style.display = 'none';
                     document.getElementById('admin-dashboard').style.display = 'block';
                     document.getElementById('admin-name').textContent = user.displayName;
@@ -108,10 +218,9 @@
         // Fetch Analytics Data
         async function fetchAnalytics() {
             const analyticsTable = document.getElementById('analyticsTable').getElementsByTagName('tbody')[0];
-            analyticsTable.innerHTML = ''; // Clear existing data
+            analyticsTable.innerHTML = '';
 
             const querySnapshot = await db.collection('portfolioAnalytics').get();
-
             querySnapshot.forEach(doc => {
                 const data = doc.data();
                 const viewed = data.viewed;
@@ -135,7 +244,7 @@
         // Fetch Contact Messages
         async function fetchContactMessages() {
             const contactTable = document.getElementById('contactTable').getElementsByTagName('tbody')[0];
-            contactTable.innerHTML = ''; // Clear existing data
+            contactTable.innerHTML = '';
 
             const querySnapshot = await db.collection('portfolioContact').get();
 
@@ -169,10 +278,9 @@
                 document.getElementById('login-section').style.display = 'block';
             });
         }
-
-        // Optionally, add additional functionality for 'Manage Social Media' and 'Manage Websites'
-        // For now, you can create similar functions to handle managing content, posting updates, etc.
     </script>
+
+
 </body>
 
 </html>
