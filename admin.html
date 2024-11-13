@@ -179,11 +179,11 @@
 
     <!-- Firebase Scripts (using Firebase v9) -->
     <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-        import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
         import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js";
-
+    
         // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCsitF_YPDGnMwK0xIk2tUgQXJnxS2HN_o",
@@ -194,22 +194,19 @@
             appId: "1:885898378176:web:ee850a5c980b4417a2a625",
             measurementId: "G-Y16GN7VL5Q"
         };
-
+    
         // Initialize Firebase and services
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
         const analytics = getAnalytics(app);
-
- 
-
-        
+    
         // Google Sign-In
         const googleLoginBtn = document.getElementById('google-login-btn');
         googleLoginBtn.addEventListener('click', async () => {
             const provider = new GoogleAuthProvider();
             try {
-                const result = await auth.signInWithPopup(provider);
+                const result = await signInWithPopup(auth, provider);
                 const user = result.user;
                 if (user.email === '1988lrp@gmail.com') {
                     document.getElementById('login-section').style.display = 'none';
@@ -217,23 +214,23 @@
                     document.getElementById('admin-name').textContent = user.displayName;
                 } else {
                     alert('Unauthorized Email');
-                    auth.signOut();
+                    await signOut(auth); // Ensure unauthorized user is logged out
                 }
             } catch (error) {
                 console.error(error);
             }
         });
-
+    
         // Fetch Analytics Data
         async function fetchAnalytics() {
             const analyticsTable = document.getElementById('analyticsTable').getElementsByTagName('tbody')[0];
             analyticsTable.innerHTML = '';
-
-            const querySnapshot = await db.collection('portfolioAnalytics').get();
+    
+            const querySnapshot = await getDocs(collection(db, 'portfolioAnalytics'));
             querySnapshot.forEach(doc => {
                 const data = doc.data();
                 const viewed = data.viewed;
-
+    
                 viewed.forEach(view => {
                     const row = analyticsTable.insertRow();
                     row.innerHTML = `
@@ -249,14 +246,13 @@
                 });
             });
         }
-
+    
         // Fetch Contact Messages
         async function fetchContactMessages() {
             const contactTable = document.getElementById('contactTable').getElementsByTagName('tbody')[0];
             contactTable.innerHTML = '';
-
-            const querySnapshot = await db.collection('portfolioContact').get();
-
+    
+            const querySnapshot = await getDocs(collection(db, 'portfolioContact'));
             querySnapshot.forEach(doc => {
                 const data = doc.data();
                 const row = contactTable.insertRow();
@@ -268,26 +264,30 @@
                 `;
             });
         }
-
+    
         // Button Event Listeners
         document.getElementById('view-analytics-btn').addEventListener('click', () => {
             document.getElementById('analytics-section').style.display = 'block';
             fetchAnalytics();
         });
-
+    
         document.getElementById('read-contact-btn').addEventListener('click', () => {
             document.getElementById('contact-messages').style.display = 'block';
             fetchContactMessages();
         });
-
+    
         // Logout function
         function logout() {
-            auth.signOut().then(() => {
+            signOut(auth).then(() => {
                 document.getElementById('admin-dashboard').style.display = 'none';
                 document.getElementById('login-section').style.display = 'block';
+            }).catch(error => {
+                console.error("Error signing out:", error);
             });
         }
-    </script>
+
+</script>
+
 
 
 </body>
