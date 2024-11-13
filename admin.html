@@ -201,23 +201,13 @@
         const db = getFirestore(app);
         const analytics = getAnalytics(app);
 
-        // Google Sign-In function
-        async function googleSignIn() {
-            const provider = new GoogleAuthProvider();
-            try {
-                const result = await signInWithPopup(auth, provider);
-                console.log('User signed in:', result.user);
-            } catch (error) {
-                console.error("Error signing in with Google:", error);
-            }
-        }
-
+ 
 
         
         // Google Sign-In
         const googleLoginBtn = document.getElementById('google-login-btn');
         googleLoginBtn.addEventListener('click', async () => {
-            const provider = new firebase.auth.GoogleAuthProvider();
+            const provider = new GoogleAuthProvider();
             try {
                 const result = await auth.signInWithPopup(provider);
                 const user = result.user;
