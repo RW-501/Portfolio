@@ -1398,7 +1398,7 @@ input, select, textarea {
 		-webkit-transform: scale(1.0);
 		-ms-transform: scale(1.0);
 		transform: scale(1.0);
-		-webkit-backface-visibility: hidden;
+		/* -webkit-backface-visibility: hidden; */
 		position: fixed;
 		top: 0;
 		left: 0;
@@ -2088,10 +2088,6 @@ input, select, textarea {
  
  
 
-.box_text.active{
-
-}
-
 
 .xxxxx.top{
     transform: translateY(-200px) rotate(360deg) !important;
@@ -2399,10 +2395,6 @@ img{
 	
 }
 
-#activeFalling{
-	
-}
-
 
 
 
@@ -2614,10 +2606,7 @@ img{
     animation-delay: .4s;
 }
 
-.loading {
-	
-	
-}
+
 #fallingBox{
 	display:inline;
 	
