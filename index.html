@@ -856,7 +856,8 @@
 
   <div id="bg"></div>
 
-  <script defer>
+  <script >
+import { logPageView } from 'assets/js/mainFlow-live.js';
 
 
 
@@ -879,11 +880,11 @@ window.addEventListener('load', function() {
     document.addEventListener('DOMContentLoaded', function() {
       // Header Logo Click Event
       document.querySelector('.logo a').addEventListener('click', () => {
-        window.logPageView('Homepage');
+        logPageView('Homepage');
       });
       // Portfolio Subtitle Click Event
       document.querySelector('.subtitle a').addEventListener('click', () => {
-        window.logPageView(viewName);
+        logPageView(viewName);
       });
       // Portfolio Navigation Links Click Events
       const portfolioLinks = {
@@ -893,7 +894,7 @@ window.addEventListener('load', function() {
       };
       for (const [id, viewName] of Object.entries(portfolioLinks)) {
         document.querySelector(`a[href="#${id}"]`).addEventListener('click', () => {
-          window.logPageView(viewName);
+          logPageView(viewName);
           console.log("Page ",viewName);
         });
       }
@@ -914,7 +915,7 @@ window.addEventListener('load', function() {
           if (id === 'about') {
             typeWriter();
           }
-          window.logPageView(viewName);
+          logPageView(viewName);
         });
       }
     });
