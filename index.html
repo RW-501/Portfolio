@@ -888,7 +888,7 @@ window.addEventListener('load', function() {
         gfx: 'Graphic Work Home'
       };
       for (const [id, viewName] of Object.entries(portfolioLinks)) {
-        document.querySelector(`a[href="#${id}"]`).addEventListener('click', () => {
+        document.querySelector(`a[href="${id}"]`).addEventListener('click', () => {
           logPageView(viewName);
           console.log("Page ",viewName);
         });
@@ -904,7 +904,7 @@ window.addEventListener('load', function() {
       for (const [id, viewName] of Object.entries(mainNavLinks)) {
         const selector = id === 'linkedin' ?
           'a[href*="linkedin.com"]' :
-          `a[href="#${id}"]`;
+          `a[href="${id}"]`;
         document.querySelector(selector).addEventListener('click', () => {
           if (id === 'about') {
             typeWriter();
