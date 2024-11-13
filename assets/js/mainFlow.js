@@ -2,145 +2,129 @@
 
 // Initialize Firebase
 const firebaseConfig = {
-    apiKey: "AIzaSyC8PYJV5-E6hIYbElsgb5e7MOS0faCiLM4",
-    authDomain: "quizzatopia-bdfc9.firebaseapp.com",
-    projectId: "quizzatopia-bdfc9",
-    storageBucket: "quizzatopia-bdfc9.appspot.com",
-    messagingSenderId: "828105067067",
-    appId: "1:828105067102:web:76afb989ed7c03ebb542cf",
-    measurementId: "G-J3QK9V5480"
-};
-
-firebase.initializeApp(firebaseConfig);
-const firestore = firebase.firestore();
-let ipAddress = '';
-
-// Event Listener for Page Exit
-window.addEventListener('beforeunload', function (event) {
-    getCurrentViewFunc("Guest Exit");
-});
-
-// Get Current Date in MM/DD/YYYY Format
-function getCurrentDate() {
+    apiKey: "AIzaSyCsitF_YPDGnMwK0xIk2tUgQXJnxS2HN_o",
+    authDomain: "ron-main.firebaseapp.com",
+    projectId: "ron-main",
+    storageBucket: "ron-main.firebasestorage.app",
+    messagingSenderId: "885898378176",
+    appId: "1:885898378176:web:ee850a5c980b4417a2a625",
+    measurementId: "G-Y16GN7VL5Q"
+  };
+  
+  firebase.initializeApp(firebaseConfig);
+  const firestore = firebase.firestore();
+  let ipAddress = '';
+  
+  // Page View Log
+  function logPageView(page) {
+    const db = firestore;
+    const currentDate = getCurrentDate();
+    const logEntry = {
+      page,
+      timestamp: firebase.firestore.Timestamp.fromDate(new Date())
+    };
+  
+    db.collection("portfolioAnalytics")
+      .where("ipAddress", "==", ipAddress)
+      .get()
+      .then(querySnapshot => {
+        if (!querySnapshot.empty) {
+          const docRef = db.collection("portfolioAnalytics").doc(querySnapshot.docs[0].id);
+          docRef.update({ viewed: firebase.firestore.FieldValue.arrayUnion(logEntry) });
+        } else {
+          db.collection("portfolioAnalytics").add({
+            ipAddress,
+            currentDate,
+            viewed: [logEntry]
+          });
+        }
+      })
+      .catch(error => console.error("Error logging page view:", error));
+  }
+  
+  // Get Current Date in MM/DD/YYYY Format
+  function getCurrentDate() {
     const now = new Date();
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0');
     const day = String(now.getDate()).padStart(2, '0');
     return `${month}/${day}/${year}`;
-}
-
-// Log User Actions
-function getCurrentViewFunc(page) {
-    const db = firebase.firestore();
-    let currentDate = getCurrentDate();
-    const currentURL = window.location.href;
-    const referrerURL = document.referrer;
-
-    if (!page) {
-        page = "Home";
+  }
+  
+  // Get User's IP Address
+  async function getIPAddress() {
+    if (!ipAddress) {
+      try {
+        ipAddress = await fetch('https://api.ipify.org').then(res => res.text());
+        logPageView("Guest Exit");
+      } catch (error) {
+        console.error('Error fetching IP:', error);
+      }
     }
+    return ipAddress;
+  }
+  
+  getIPAddress();
+  
+  // Contact Form Submission
+  async function sendMessageFunc(event) { 
+    event.preventDefault();
 
-    const logEntry = {
-        page: page,
-        timestamp: firebase.firestore.Timestamp.fromDate(new Date())
+    // Get user input
+    const contactName = sanitizeInput(document.getElementById("name").value);
+    const contactEmail = sanitizeInput(document.getElementById("email").value);
+    const contactMessage = sanitizeInput(document.getElementById("message").value);
+
+    // Prepare the message object to send to Firestore
+    const messageData = {
+        name: contactName,
+        email: contactEmail,
+        message: contactMessage,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     };
 
-    db.collection("ronPortfolio")
-        .where("ipAddress", "==", ipAddress)
-        .get()
-        .then(querySnapshot => {
-            if (!querySnapshot.empty) {
-                const docId = querySnapshot.docs[0].id;
-                const docRef = db.collection("ronPortfolio").doc(docId);
+    try {
+        // Save the message to Firestore (portfolioContact collection)
+        const db = firebase.firestore();
+        await db.collection("portfolioContact").add(messageData);
 
-                docRef.get().then(doc => {
-                    if (doc.exists) {
-                        const existingViewed = doc.data().viewed || [];
-                        existingViewed.push(logEntry);
+        // Show success message to the user
+        const msgPop = document.getElementById("msgPop");
+        const msgText = document.getElementById("msg-text_a");
+        
+        msgText.innerHTML = "Thank you for your message! I'll get back to you soon. Add me on LinkedIn.";
+        msgPop.style.display = "block";
 
-                        docRef.update({ viewed: existingViewed })
-                            .then(() => {
-                                console.log("Page view logged successfully.");
-                            })
-                            .catch(error => {
-                                console.error("Error logging page view:", error);
-                            });
-                    }
-                }).catch(error => {
-                    console.error("Error getting document:", error);
-                });
-            } else {
-                const newUserLog = {
-                    ipAddress,
-                    currentDate,
-                    currentURL,
-                    referrerURL,
-                    viewed: [logEntry]
-                };
+        // Reset the form and hide the message after a delay
+        setTimeout(() => {
+            msgPop.style.display = "none";
+            document.getElementById("contactForm").reset();
+        }, 10000);
 
-                db.collection("ronPortfolio").add(newUserLog)
-                    .then(() => {
-                        console.log("User log created successfully.");
-                    })
-                    .catch(error => {
-                        console.error("Error creating user log:", error);
-                    });
-            }
-        })
-        .catch(error => {
-            console.error("Error checking user existence:", error);
-        });
-}
+    } catch (error) {
+        console.error("Error sending message:", error);
 
-// Fetch User's IP Address
-async function getIPAddress() {
-    if (ipAddress === '') {
-        return fetch('https://api.ipify.org')
-            .then(response => response.text())
-            .then(data => {
-                ipAddress = data.trim();
-                console.log("IP Address:", ipAddress);
-                getCurrentViewFunc("");
-                return ipAddress;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                return null;
-            });
-    } else {
-        return ipAddress;
+        // Show error message to the user
+        const msgPop = document.getElementById("msgPop");
+        const msgText = document.getElementById("msg-text_a");
+        
+        msgText.innerHTML = "There was an error. Please try again later.";
+        msgPop.style.display = "block";
+
+        setTimeout(() => {
+            msgPop.style.display = "none";
+        }, 10000);
     }
 }
 
-getIPAddress();
-
-// Contact Form Submission
-function sendMessageFunc() {
-    const contactName = document.getElementById("contactName").value;
-    const contactSubject = document.getElementById("contactSubject").value;
-    const contactMessage = document.getElementById("contactMessage").value;
-
-    $.post("/ron-s_portfolio/sendContactme.php", {
-        nameZZ: contactName,
-        subjectZZ: contactSubject,
-        msgZZ: contactMessage
-    }, function (output) {
-        console.log(output + "    output?????????  ");
-
-        const contactForm = document.getElementById("contactForm");
-        const msg = document.getElementById("msgPop");
-
-        if (output.includes("Success")) {
-            contactForm.innerHTML = "<br><br><br><br><br><br><br><br><br><br>";
-            msg.style.display = "block";
-            msg.classList.add('active');
-            document.getElementById('msg-text_a').innerHTML = "Thank You,<br> Add Me On Linkedin.";
-        } else {
-            document.getElementById('msg-text_a').innerHTML = "There was an error.";
-        }
-        setTimeout(removeContactMSGFunc, 10000);
-    });
+// Sanitize input by removing dangerous content
+function sanitizeInput(input) {
+    const element = document.createElement("div");
+    element.textContent = input;  // This ensures no HTML or script tags are injected
+    return element.innerHTML;  // Returns the sanitized value
 }
+
+
 
 function removeContactMSGFunc() {
     const msg = document.getElementById("msgPop");

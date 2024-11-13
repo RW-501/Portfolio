@@ -6,20 +6,105 @@
 
 /* main.css */
 
-footer{
-    z-index: 200;
-    display: initial;
-    margin: auto;
-    position: absolute;
-    width: 100%;
+
+/* General Footer Styling */
+.footer-container {
+    background: linear-gradient(45deg, #3a3a3a, #1e1e1e); /* Gradient background */
+    color: white;
+    padding: 30px 0;
     text-align: center;
+    font-family: 'Arial', sans-serif;
+	z-index: 200;
+    display: initial;
 
 }
-.footer-links{
 
-    margin: auto;
-    display: block;
+.footer-container p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 10px 0;
+    color: #ccc; /* Light text color */
 }
+
+.footer-container p a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+}
+
+.footer-container p a:hover {
+    color: #2a1e86; /* Highlight color on hover */
+}
+
+/* Social Media Icons */
+.social-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.social-links li {
+    display: inline-block;
+}
+
+.social-links a {
+    font-size: 1.5rem;
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.social-links a:hover {
+    transform: scale(1.1); /* Slight zoom effect on hover */
+}
+
+/* Hover effects for each link */
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon:hover .label {
+    opacity: 1;
+}
+
+.icon .label {
+    display: none;
+    font-size: 0.9rem;
+    margin-left: 8px;
+}
+
+/* Footer Links Styling */
+.footer-content p {
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 1rem;
+}
+
+/* Mobile and Tablet Responsiveness */
+@media screen and (max-width: 768px) {
+    .footer-container {
+        padding: 20px;
+    }
+
+    .footer-container p {
+        font-size: 0.9rem;
+    }
+
+    .social-links ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .social-links li {
+        margin-bottom: 10px;
+    }
+}
+
 
 /* Ensure correct targeting */
 .social-links ul {
