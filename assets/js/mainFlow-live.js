@@ -56,7 +56,6 @@ export async function logPageView(page) {
   
     const logEntry = {
       page,
-      timestamp: firebase.firestore.Timestamp.fromDate(new Date()),
       userAgent,
       currentDate,
       referral,
@@ -168,6 +167,7 @@ export async function logPageView(page) {
   // Contact Form Submission
   export async  function sendMessageFunc(event) { 
     event.preventDefault();
+    const currentDate = getCurrentDate();
 
     // Get user input
     const contactName = sanitizeInput(document.getElementById("name").value);
@@ -180,8 +180,7 @@ export async function logPageView(page) {
         email: contactEmail,
         message: contactMessage,
         ipAddress: ipAddress,
-        currentDate, currentDate,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        currentDate: currentDate
     };
 
     try {
