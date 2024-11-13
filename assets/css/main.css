@@ -2097,105 +2097,127 @@ input, select, textarea {
     transform: translateY(-200px) rotate(360deg) !important;
     opacity: 0 !important;
 }
-.box_inside{
-		min-height:400px;
-    transform: translateY(400px) scaleX(3) !important;
-    opacity: 0  !important;
-	  transition-duration: 2s;
-  position: relative;
-
-
-  transform:rotateX(180deg) scaleX(3) !important;
-	
-	
-}
-
-
-.box_inside.active{
-	min-height:auto;
-    transform: rotateX(0) !important;
-    opacity: 1 !important;
-	
-	
-}
-	
-	
-	
-	.box_insideT{
-		min-height:400px;
-    transform: translateY(400px) scaleX(3) !important;
-    opacity: 0  !important;
-	  transition-duration: 2s;
-  position: relative;
-  display:grid;
-  width:100%;
-
-
-  transform:rotateX(180deg) scaleX(3) !important;
-	
-	
-}
-
-
-.box_insideT.active{
-	min-height:auto;
-    transform: rotateX(0) !important;
-    opacity: 1 !important;
-	max-width:100%;
-	box-sizing:border-box;
-	
-	
-}
-	.box_textT {
-		    width: 100%;
-	    transition: transform 2s, opacity 0.5s;
-    font-family: IntegralCF,sans-serif;
-    color: #C8C8C8;
-font-size: 2em;
-	text-align:center;
-	min-height: 100px;
-	padding:5%;
-	    background-color:  rgba(27, 31, 34, 0.85);
-		border:thin #A89C9D solid;
-		border-top: none;
-		border-bottom-left-radius:5vw;
-		border-bottom-right-radius:5vw;
-		
-		    overflow: hidden;
-
-    margin: 0% auto 4%;
-    font-weight: 900;
-    letter-spacing: 1px;
-}
-	
-	.box_50T {
+/* Box Inside Container */
+.box_inside, .box_insideT {
+    position: relative;
+    min-height: 400px;
+    opacity: 0;
+    transform: translateY(400px) rotateX(180deg) scaleX(3);
+    transition: all 2s ease-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    overflow: hidden;
     width: 100%;
-    margin: 5% auto;
-	margin-bottom: -7px;
-	
-	    border: thin #ffffff solid;
-    border-bottom: none;
-    border-top-left-radius: 5vw;
-    border-top-right-radius: 5vw;
+}
+
+/* Active Box */
+.box_inside.active, .box_insideT.active {
+    min-height: auto;
+    opacity: 1;
+    transform: rotateX(0) scaleX(1);
+}
+
+/* Image Box Styling */
+.box_50T {
+    width: 100%;
+    margin: 0 auto;
+    border: none;
     overflow: hidden;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(45deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2));
+    transition: transform 0.3s ease-in-out;
 }
-	
-		.box_50T > img {
-     width: 100% !important;
-    margin: auto;
-	    object-fit: cover;
-		cursor: zoom-in;
+
+.box_50T:hover {
+    transform: scale(1.05);
 }
-	
-	
-			.box_50T > iframe {
-min-height: 400px;
-    margin: auto;
-	    border-top-left-radius: 5vw;
-    border-top-right-radius: 5vw;
-    overflow: hidden;
+
+/* Image inside Box */
+.box_50T > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.5s ease-in-out;
 }
-	
+
+.box_50T > img:hover {
+    transform: scale(1.1);
+}
+
+/* Box Text Styling */
+.box_textT {
+    width: 100%;
+    padding: 2rem;
+    text-align: center;
+    background-color: rgba(27, 31, 34, 0.85);
+    color: #f0f0f0;
+    font-family: 'IntegralCF', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    border-top: 1px solid #A89C9D;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    transition: transform 0.5s ease-out, opacity 1s ease;
+    transform: translateY(20px);
+    opacity: 0;
+    margin-top: -10px;
+}
+
+.box_textT.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.box_textT h3 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 900;
+}
+
+.box_textT p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #C8C8C8;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .box_50T {
+        margin: 1rem;
+        border-radius: 8px;
+    }
+
+    .box_textT {
+        padding: 1.5rem;
+        font-size: 1.2rem;
+    }
+
+    .box_50T > img {
+        object-position: center;
+    }
+}
+
+/* Hover Effects */
+.box_50T:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    transform: scale(1.05);
+}
+
+.box_50T > img:hover {
+    transform: scale(1.1);
+}
+
+/* Gradient Background */
+.box_inside {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2));
+}
+
 	
 
 	
