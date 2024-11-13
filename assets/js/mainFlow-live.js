@@ -179,6 +179,7 @@ export async function logPageView(page) {
         email: contactEmail,
         message: contactMessage,
         ipAddress: ipAddress,
+        currentDate, currentDate,
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     };
 
