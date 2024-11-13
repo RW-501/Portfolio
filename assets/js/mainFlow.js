@@ -16,30 +16,64 @@ const firebaseConfig = {
   let ipAddress = '';
   
   // Page View Log
-  function logPageView(page) {
+// Firestore Analytics Function
+async function logPageView(page) {
     const db = firestore;
     const currentDate = getCurrentDate();
+    const ipAddress = await getIPAddress(); // Ensure IP is fetched asynchronously
+    
+    // Calculate time on page by storing timestamp when the page loads
+    const startTime = new Date().getTime();
+  
+    // Get user's device, browser info, and referral data
+    const userAgent = navigator.userAgent;
+    const deviceType = getDeviceType(userAgent); // Device detection (mobile, tablet, desktop)
+    const referral = document.referrer || 'direct'; // Referral URL
+    const screenWidth = window.screen.width;
+    const screenHeight = window.screen.height;
+  
+    // Wait for the page unload or interval to capture time on page
+    const endTime = new Date().getTime();
+    const timeOnPage = (endTime - startTime) / 1000; // Time in seconds
+  
     const logEntry = {
       page,
-      timestamp: firebase.firestore.Timestamp.fromDate(new Date())
+      timestamp: firebase.firestore.Timestamp.fromDate(new Date()),
+      userAgent,
+      currentDate,
+      referral,
+      deviceType,
+      timeOnPage,
+      screenWidth,
+      screenHeight,
+      browser: getBrowser(userAgent), // Get browser info
+      operatingSystem: getOS(userAgent), // Get OS info
     };
   
-    db.collection("portfolioAnalytics")
-      .where("ipAddress", "==", ipAddress)
-      .get()
-      .then(querySnapshot => {
-        if (!querySnapshot.empty) {
-          const docRef = db.collection("portfolioAnalytics").doc(querySnapshot.docs[0].id);
-          docRef.update({ viewed: firebase.firestore.FieldValue.arrayUnion(logEntry) });
-        } else {
-          db.collection("portfolioAnalytics").add({
-            ipAddress,
-            currentDate,
-            viewed: [logEntry]
-          });
-        }
-      })
-      .catch(error => console.error("Error logging page view:", error));
+    try {
+      // Try to find a record with the IP address
+      const querySnapshot = await db.collection("portfolioAnalytics")
+        .where("ipAddress", "==", ipAddress)
+        .get();
+  
+      if (!querySnapshot.empty) {
+        const docRef = db.collection("portfolioAnalytics").doc(querySnapshot.docs[0].id);
+        // Append the log entry to the viewed array
+        await docRef.update({
+          viewed: firebase.firestore.FieldValue.arrayUnion(logEntry)
+        });
+      } else {
+        // If no document found, create a new record
+        await db.collection("portfolioAnalytics").add({
+          ipAddress,
+          currentDate,
+          viewed: [logEntry],
+          sessions: [] // Adding session tracking (this can be enhanced further later)
+        });
+      }
+    } catch (error) {
+      console.error("Error logging page view:", error);
+    }
   }
   
   // Get Current Date in MM/DD/YYYY Format
@@ -56,15 +90,61 @@ const firebaseConfig = {
     if (!ipAddress) {
       try {
         ipAddress = await fetch('https://api.ipify.org').then(res => res.text());
-        logPageView("Guest Exit");
+        return ipAddress;
       } catch (error) {
         console.error('Error fetching IP:', error);
+        return 'unknown'; // Fallback in case of error
       }
     }
     return ipAddress;
   }
   
-  getIPAddress();
+  // Function to detect device type (mobile, tablet, desktop)
+  function getDeviceType(userAgent) {
+    if (/mobile/i.test(userAgent)) {
+      return 'mobile';
+    } else if (/tablet/i.test(userAgent)) {
+      return 'tablet';
+    } else {
+      return 'desktop';
+    }
+  }
+  
+  // Function to detect the browser from the user agent
+  function getBrowser(userAgent) {
+    if (userAgent.includes("Chrome")) {
+      return "Chrome";
+    } else if (userAgent.includes("Firefox")) {
+      return "Firefox";
+    } else if (userAgent.includes("Safari")) {
+      return "Safari";
+    } else if (userAgent.includes("Edge")) {
+      return "Edge";
+    } else {
+      return "Unknown";
+    }
+  }
+  
+  // Function to detect the OS from the user agent
+  function getOS(userAgent) {
+    if (userAgent.includes("Windows NT")) {
+      return "Windows";
+    } else if (userAgent.includes("Macintosh")) {
+      return "Mac OS";
+    } else if (userAgent.includes("Linux")) {
+      return "Linux";
+    } else if (userAgent.includes("Android")) {
+      return "Android";
+    } else if (userAgent.includes("iOS")) {
+      return "iOS";
+    } else {
+      return "Unknown";
+    }
+  }
+  
+  // Call the analytics logging function whenever a page view occurs
+  //logPageView("HomePage");  // Replace with dynamic page name as needed
+  
   
   // Contact Form Submission
   async function sendMessageFunc(event) { 

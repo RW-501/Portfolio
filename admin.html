@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="login-section">
+        <h2>Admin Login</h2>
+        <button id="google-login-btn">Login with Google</button>
+    </div>
+
+    <div id="admin-dashboard" style="display:none;">
+        <h2>Admin Dashboard</h2>
+        <p>Welcome, <span id="admin-name"></span></p>
+        
+        <div>
+            <button id="view-analytics-btn">View Analytics</button>
+            <button id="manage-social-media-btn">Manage Social Media</button>
+            <button id="manage-websites-btn">Manage Websites</button>
+            <button id="read-contact-btn">Read Contact Messages</button>
+        </div>
+        
+        <!-- Analytics Section -->
+        <div id="analytics-section" style="display:none;">
+            <h3>Analytics Data</h3>
+            <table id="analyticsTable">
+                <thead>
+                    <tr>
+                        <th>Page</th>
+                        <th>Timestamp</th>
+                        <th>Device Type</th>
+                        <th>Time on Page (s)</th>
+                        <th>Referral</th>
+                        <th>Screen Size</th>
+                        <th>Browser</th>
+                        <th>Operating System</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Contact Messages Section -->
+        <div id="contact-messages" style="display:none;">
+            <h3>Contact Messages</h3>
+            <table id="contactTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Message</th>
+                        <th>Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCsitF_YPDGnMwK0xIk2tUgQXJnxS2HN_o",
+            authDomain: "ron-main.firebaseapp.com",
+            projectId: "ron-main",
+            storageBucket: "ron-main.firebasestorage.app",
+            messagingSenderId: "885898378176",
+            appId: "1:885898378176:web:ee850a5c980b4417a2a625",
+            measurementId: "G-Y16GN7VL5Q"
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore(app);
+
+        // Google Sign-In
+        const googleLoginBtn = document.getElementById('google-login-btn');
+        googleLoginBtn.addEventListener('click', async () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            try {
+                const result = await auth.signInWithPopup(provider);
+                const user = result.user;
+                if (user.email === '1988lrp@gmail.com') {
+                    // Admin Login Successful
+                    document.getElementById('login-section').style.display = 'none';
+                    document.getElementById('admin-dashboard').style.display = 'block';
+                    document.getElementById('admin-name').textContent = user.displayName;
+                } else {
+                    alert('Unauthorized Email');
+                    auth.signOut();
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        });
+
+        // Fetch Analytics Data
+        async function fetchAnalytics() {
+            const analyticsTable = document.getElementById('analyticsTable').getElementsByTagName('tbody')[0];
+            analyticsTable.innerHTML = ''; // Clear existing data
+
+            const querySnapshot = await db.collection('portfolioAnalytics').get();
+
+            querySnapshot.forEach(doc => {
+                const data = doc.data();
+                const viewed = data.viewed;
+
+                viewed.forEach(view => {
+                    const row = analyticsTable.insertRow();
+                    row.innerHTML = `
+                        <td>${view.page}</td>
+                        <td>${view.timestamp.toDate().toLocaleString()}</td>
+                        <td>${view.deviceType}</td>
+                        <td>${view.timeOnPage}s</td>
+                        <td>${view.referral}</td>
+                        <td>${view.screenWidth}x${view.screenHeight}</td>
+                        <td>${view.browser}</td>
+                        <td>${view.operatingSystem}</td>
+                    `;
+                });
+            });
+        }
+
+        // Fetch Contact Messages
+        async function fetchContactMessages() {
+            const contactTable = document.getElementById('contactTable').getElementsByTagName('tbody')[0];
+            contactTable.innerHTML = ''; // Clear existing data
+
+            const querySnapshot = await db.collection('portfolioContact').get();
+
+            querySnapshot.forEach(doc => {
+                const data = doc.data();
+                const row = contactTable.insertRow();
+                row.innerHTML = `
+                    <td>${data.name}</td>
+                    <td>${data.email}</td>
+                    <td>${data.message}</td>
+                    <td>${data.timestamp.toDate().toLocaleString()}</td>
+                `;
+            });
+        }
+
+        // Button Event Listeners
+        document.getElementById('view-analytics-btn').addEventListener('click', () => {
+            document.getElementById('analytics-section').style.display = 'block';
+            fetchAnalytics();
+        });
+
+        document.getElementById('read-contact-btn').addEventListener('click', () => {
+            document.getElementById('contact-messages').style.display = 'block';
+            fetchContactMessages();
+        });
+
+        // Logout function
+        function logout() {
+            auth.signOut().then(() => {
+                document.getElementById('admin-dashboard').style.display = 'none';
+                document.getElementById('login-section').style.display = 'block';
+            });
+        }
+
+        // Optionally, add additional functionality for 'Manage Social Media' and 'Manage Websites'
+        // For now, you can create similar functions to handle managing content, posting updates, etc.
+    </script>
+</body>
+
+</html>
