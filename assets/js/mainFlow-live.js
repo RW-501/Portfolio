@@ -36,7 +36,7 @@ const analytics = getAnalytics(app);
   
   // Page View Log
 // Firestore Analytics Function
-async function logPageView(page) {
+export async function logPageView(page) {
     const db = firestore;
     const currentDate = getCurrentDate();
     const ipAddress = await getIPAddress(); // Ensure IP is fetched asynchronously
