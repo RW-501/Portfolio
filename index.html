@@ -879,11 +879,11 @@ window.addEventListener('load', function() {
     document.addEventListener('DOMContentLoaded', function() {
       // Header Logo Click Event
       document.querySelector('.logo a').addEventListener('click', () => {
-        logPageView('Homepage');
+        window.logPageView('Homepage');
       });
       // Portfolio Subtitle Click Event
       document.querySelector('.subtitle a').addEventListener('click', () => {
-        logPageView('See Portfolio');
+        window.logPageView(viewName);
       });
       // Portfolio Navigation Links Click Events
       const portfolioLinks = {
@@ -893,7 +893,7 @@ window.addEventListener('load', function() {
       };
       for (const [id, viewName] of Object.entries(portfolioLinks)) {
         document.querySelector(`a[href="#${id}"]`).addEventListener('click', () => {
-          logPageView(viewName);
+          window.logPageView(viewName);
           console.log("Page ",viewName);
         });
       }
@@ -914,7 +914,7 @@ window.addEventListener('load', function() {
           if (id === 'about') {
             typeWriter();
           }
-          logPageView(viewName);
+          window.logPageView(viewName);
         });
       }
     });
