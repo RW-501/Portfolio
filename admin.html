@@ -17,22 +17,62 @@
 -->
     <style>
         /* Basic Reset and Body Styles */
-        body, h2, h3, button, table {
-            margin: 0;
-            padding: 0;
-            font-family: 'Arial', sans-serif;
-        }
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f9;
+    color: #333;
+}
 
-        body {
-            background-color: #f4f7f6;
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            flex-direction: column;
-            padding: 20px;
-        }
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    color: #0056b3;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 15px 0;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+td {
+    text-align: center;
+}
 
         /* Container for Admin Dashboard */
         #login-section, #admin-dashboard {
@@ -164,13 +204,13 @@
                 <thead>
                     <tr>
                         <th>Page</th>
-                        <th>Timestamp</th>
                         <th>Device Type</th>
-                        <th>Time on Page (s)</th>
-                        <th>Referral</th>
-                        <th>Screen Size</th>
                         <th>Browser</th>
-                        <th>Operating System</th>
+                        <th>OS</th>
+                        <th>Time on Page (s)</th>
+                        <th>Screen Resolution</th>
+                        <th>Location</th>
+                        <th>Date</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -243,30 +283,39 @@
         });
     
         // Fetch Analytics Data
-        async function fetchAnalytics() {
-            const analyticsTable = document.getElementById('analyticsTable').getElementsByTagName('tbody')[0];
-            analyticsTable.innerHTML = '';
-    
-            const querySnapshot = await getDocs(collection(db, 'portfolioAnalytics'));
-            querySnapshot.forEach(doc => {
-                const data = doc.data();
-                const viewed = data.viewed;
-    
-                viewed.forEach(view => {
-                    const row = analyticsTable.insertRow();
-                    row.innerHTML = `
-                        <td>${view.page}</td>
-                        <td>${view.timestamp.toDate().toLocaleString()}</td>
-                        <td>${view.deviceType}</td>
-                        <td>${view.timeOnPage}s</td>
-                        <td>${view.referral}</td>
-                        <td>${view.screenWidth}x${view.screenHeight}</td>
-                        <td>${view.browser}</td>
-                        <td>${view.operatingSystem}</td>
-                    `;
-                });
+        async function fetchLogs() {
+    const logsTableBody = document.getElementById("logsTableBody");
+    logsTableBody.innerHTML = ""; // Clear previous logs
+    const portfolioAnalyticsRef = collection(db, "portfolioAnalytics");
+
+    try {
+        const querySnapshot = await getDocs(portfolioAnalyticsRef);
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            data.viewed.forEach((entry) => {
+                const row = document.createElement("tr");
+
+                row.innerHTML = `
+                    <td>${entry.page || "N/A"}</td>
+                    <td>${entry.deviceType || "N/A"}</td>
+                    <td>${entry.browser || "N/A"}</td>
+                    <td>${entry.operatingSystem || "N/A"}</td>
+                    <td>${entry.timeOnPage || "N/A"}</td>
+                    <td>${entry.screenWidth}x${entry.screenHeight}</td>
+                    <td>${entry.location ? `${entry.location.city}, ${entry.location.state}, ${entry.location.country}` : "N/A"}</td>
+                    <td>${entry.currentDate || "N/A"}</td>
+                `;
+
+                logsTableBody.appendChild(row);
             });
-        }
+        });
+    } catch (error) {
+        console.error("Error fetching logs:", error);
+    }
+}
+
+// Event listener for the "Fetch Logs" button
+//document.getElementById("fetchLogsBtn").addEventListener("click", fetchLogs);
     
         // Fetch Contact Messages
         async function fetchContactMessages() {
