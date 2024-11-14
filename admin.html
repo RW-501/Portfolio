@@ -283,7 +283,8 @@ td {
         });
     
         // Fetch Analytics Data
-        async function fetchLogs() {
+  // Fetch Analytics Data
+async function fetchLogs() {
     const logsTableBody = document.getElementById("logsTableBody");
     logsTableBody.innerHTML = ""; // Clear previous logs
     const portfolioAnalyticsRef = collection(db, "portfolioAnalytics");
@@ -292,27 +293,34 @@ td {
         const querySnapshot = await getDocs(portfolioAnalyticsRef);
         querySnapshot.forEach((doc) => {
             const data = doc.data();
-            data.viewed.forEach((entry) => {
-                const row = document.createElement("tr");
+            
+            // Check if the 'viewed' array exists and is an array before iterating
+            if (Array.isArray(data.viewed)) {
+                data.viewed.forEach((entry) => {
+                    const row = document.createElement("tr");
 
-                row.innerHTML = `
-                    <td>${entry.page || "N/A"}</td>
-                    <td>${entry.deviceType || "N/A"}</td>
-                    <td>${entry.browser || "N/A"}</td>
-                    <td>${entry.operatingSystem || "N/A"}</td>
-                    <td>${entry.timeOnPage || "N/A"}</td>
-                    <td>${entry.screenWidth}x${entry.screenHeight}</td>
-                    <td>${entry.location ? `${entry.location.city}, ${entry.location.state}, ${entry.location.country}` : "N/A"}</td>
-                    <td>${entry.currentDate || "N/A"}</td>
-                `;
+                    row.innerHTML = `
+                        <td>${entry.page || "N/A"}</td>
+                        <td>${entry.deviceType || "N/A"}</td>
+                        <td>${entry.browser || "N/A"}</td>
+                        <td>${entry.operatingSystem || "N/A"}</td>
+                        <td>${entry.timeOnPage || "N/A"}</td>
+                        <td>${entry.screenWidth}x${entry.screenHeight}</td>
+                        <td>${entry.location ? `${entry.location.city}, ${entry.location.state}, ${entry.location.country}` : "N/A"}</td>
+                        <td>${entry.currentDate || "N/A"}</td>
+                    `;
 
-                logsTableBody.appendChild(row);
-            });
+                    logsTableBody.appendChild(row);
+                });
+            } else {
+                console.warn(`No 'viewed' data found for document with ID: ${doc.id}`);
+            }
         });
     } catch (error) {
         console.error("Error fetching logs:", error);
     }
 }
+
 
 // Event listener for the "Fetch Logs" button
 //document.getElementById("fetchLogsBtn").addEventListener("click", fetchLogs);
