@@ -5,7 +5,10 @@
 @import url(https://fonts.googleapis.com/css?family=Lobster+Two:700italic);
 
 /* main.css */
-
+article {
+    width: 100%;
+    padding: 20%;
+}
 
 /* General Footer Styling */
 .footer-container {
