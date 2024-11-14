@@ -19,6 +19,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+
+const ipAPI = 'https://api.ipify.org?format=json';
+const locationAPI = 'https://ipapi.co';
 // Update logPageView function
 const getUserLocationByIP = async (ip) => { 
   try {
