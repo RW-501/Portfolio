@@ -166,11 +166,7 @@ try {
   //logPageView("HomePage");  // Replace with dynamic page name as needed
   
   
-  // Contact Form Submission
-  import { 
-    collection, addDoc 
-  } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
-  
+ 
   // Function to send message and save to Firestore
   export async function sendMessageFunc(event) { 
       event.preventDefault();
