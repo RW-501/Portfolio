@@ -70,7 +70,7 @@ const logEntry = {
   location: locationData  // Include location data in the log entry
 };
 
-console.log("logEntry ", logEntry);
+//console.log("logEntry ", logEntry);
 
 try {
   // Query to find a document with the same IP address
