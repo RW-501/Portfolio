@@ -208,12 +208,16 @@ try {
           
           msgText.innerHTML = "Thank you for your message! I'll get back to you soon. Add me on LinkedIn.";
           msgPop.style.display = "block";
-  
+          document.getElementById("contactForm").reset();
           // Reset the form and hide the message after a delay
+
+
+          
           setTimeout(() => {
-              msgPop.style.display = "none";
-              document.getElementById("contactForm").reset();
-          }, 10000);
+
+              removeContactMSGFunc();
+
+          }, 1000);
   
       } catch (error) {
           console.error("Error sending message:", error);
@@ -228,7 +232,7 @@ try {
           setTimeout(() => {
               msgPop.style.display = "none";
               removeContactMSGFunc();
-          }, 10000);
+          }, 300);
       }
   }
   
