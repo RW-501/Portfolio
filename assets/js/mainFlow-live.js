@@ -206,8 +206,17 @@ try {
           const msgPop = document.getElementById("msgPop");
           const msgText = document.getElementById("msg-text_a");
           
-          msgText.innerHTML = "Thank you for your message! I'll get back to you soon. Add me on LinkedIn.";
-          msgPop.style.display = "block";
+          msgText.innerHTML = `
+          <div style="font-size: 16px; color: #333; font-family: Arial, sans-serif;">
+            <p style="font-size: 18px; font-weight: bold; color: #28a745;">Thank you for reaching out!</p>
+            <p>I'll get back to you as soon as possible. In the meantime, feel free to connect with me on LinkedIn to stay in touch!</p>
+            <p style="font-size: 14px; color: #0077b5;">
+              <a href="https://www.linkedin.com/in/yourlinkedinprofile" target="_blank" style="text-decoration: none; color: #0077b5; font-weight: bold;">Add me on LinkedIn</a>
+            </p>
+          </div>
+        `;
+        msgPop.style.display = "block";
+                  msgPop.style.display = "block";
           document.getElementById("contactForm").reset();
           // Reset the form and hide the message after a delay
 
