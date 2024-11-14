@@ -915,7 +915,7 @@ window.addEventListener('load', function() {
           if (id === 'about') {
             typeWriter();
           }
-          //logPageView(viewName);
+          logPageView(viewName);
         });
       }
     });
@@ -926,7 +926,7 @@ window.addEventListener('load', function() {
       const resetButton = contactForm.querySelector('input[type="reset"]');
       // Submit button event listener
       contactSubmitBtn.addEventListener('click', function() {
-        semdMessageFunc();
+        sendMessageFunc();
       });
       // Reset button event listener for form reset action
       resetButton.addEventListener('click', function() {
