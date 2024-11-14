@@ -895,7 +895,7 @@ window.addEventListener('load', function() {
       for (const [id, viewName] of Object.entries(portfolioLinks)) {
         document.querySelector(`a[href="#${id}"]`).addEventListener('click', () => {
           logPageView(viewName);
-          console.log("Page ",viewName);
+          //console.log("Page ",viewName);
         });
       }
       // Main Navigation Links Click Events
@@ -915,7 +915,7 @@ window.addEventListener('load', function() {
           if (id === 'about') {
             typeWriter();
           }
-          logPageView(viewName);
+          //logPageView(viewName);
         });
       }
     });
