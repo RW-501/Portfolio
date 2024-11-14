@@ -177,9 +177,9 @@ try {
       const currentDate = getCurrentDate();
   
       // Get user input
-      const contactName = sanitizeInput(document.getElementById("name").value);
-      const contactEmail = sanitizeInput(document.getElementById("email").value);
-      const contactMessage = sanitizeInput(document.getElementById("message").value);
+      const contactName = sanitizeInput(document.getElementById("contactName").value);
+      const contactSubject = sanitizeInput(document.getElementById("contactSubject").value);
+      const contactMessage = sanitizeInput(document.getElementById("contactMessage").value);
       const ipAddress = await getIPAddress();
   
       // Get location data based on IP address
@@ -188,7 +188,7 @@ try {
       // Prepare the message object to send to Firestore
       const messageData = {
           name: contactName,
-          email: contactEmail,
+          contactSubject: contactSubject,
           message: contactMessage,
           ipAddress: ipAddress,
           location: locationData,
