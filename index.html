@@ -925,9 +925,10 @@ window.addEventListener('load', function() {
       const contactSubmitBtn = document.getElementById('contactSubmitBtn');
       const resetButton = contactForm.querySelector('input[type="reset"]');
       // Submit button event listener
-      contactSubmitBtn.addEventListener('click', function() {
-        sendMessageFunc();
-      });
+      contactSubmitBtn.addEventListener('click', function(event) {
+  sendMessageFunc(event);  // Pass the event object to the function
+});
+
       // Reset button event listener for form reset action
       resetButton.addEventListener('click', function() {
         // Optional: Add a reset action confirmation if desired
