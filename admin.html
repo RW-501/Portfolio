@@ -15,146 +15,145 @@
     <!-- Custom Stylesheet 
     <link rel="stylesheet" href="styles.css">
 -->
-    <style>
-        /* Basic Reset and Body Styles */
-/* styles.css */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f6f9;
-    color: #333;
-}
+<style>
+    /* Universal Reset and Body Styling */
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+    
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f0f3f8;
+        color: #333;
+        line-height: 1.6;
+    }
+    
+    .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    
+    h1, h2, h3 {
+        color: #00509e;
+        margin-bottom: 20px;
+    }
 
-.container {
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px;
-    text-align: center;
-}
+    /* Header Styling */
+    header {
+        background-color: #0056b3;
+        color: #fff;
+        padding: 15px 0;
+        text-align: center;
+    }
 
-h1 {
-    color: #0056b3;
-}
+    header nav ul {
+        list-style: none;
+    }
 
-button {
-    padding: 10px 20px;
-    margin: 15px 0;
-    font-size: 1rem;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
+    header nav ul li {
+        display: inline;
+        margin: 0 15px;
+    }
 
-button:hover {
-    background-color: #0056b3;
-}
+    header nav ul li a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+    }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
+    /* Login Section */
+    #login-section, #admin-dashboard {
+        width: 100%;
+        max-width: 700px;
+        margin: 20px auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    
+    #google-login-btn {
+        background-color: #4285F4;
+        color: white;
+        padding: 12px 20px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
 
-th, td {
-    padding: 12px;
-    border: 1px solid #ddd;
-}
+    #google-login-btn:hover {
+        background-color: #357AE8;
+    }
 
-th {
-    background-color: #007bff;
-    color: white;
-}
+    /* Dashboard Buttons */
+    #admin-dashboard button {
+        background-color: #00a65a;
+        color: white;
+        padding: 12px 25px;
+        margin: 10px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
 
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
+    #admin-dashboard button:hover {
+        background-color: #008d4c;
+    }
 
-td {
-    text-align: center;
-}
+    /* Table Styling */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        background: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
-        /* Container for Admin Dashboard */
-        #login-section, #admin-dashboard {
-            width: 100%;
-            max-width: 800px;
-            text-align: center;
-            padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+    th, td {
+        padding: 14px;
+        text-align: center;
+    }
 
-        /* Login Section */
-        #login-section h2 {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
+    th {
+        background-color: #0056b3;
+        color: white;
+        font-weight: bold;
+    }
 
-        #google-login-btn {
-            background-color: #4285F4;
-            color: white;
-            padding: 10px 20px;
-            font-size: 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
+    td {
+        background-color: #f9f9f9;
+        border-bottom: 1px solid #ddd;
+    }
 
-        #google-login-btn:hover {
-            background-color: #357AE8;
-        }
+    tr:nth-child(even) td {
+        background-color: #f1f5f8;
+    }
 
-        /* Admin Dashboard */
-        #admin-dashboard h2 {
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
+    /* Interactive Sections */
+    #analytics-section, #contact-messages {
+        display: none;
+    }
 
-        #admin-dashboard p {
-            font-size: 18px;
-            margin-bottom: 30px;
-        }
+    /* Footer Style */
+    footer {
+        text-align: center;
+        padding: 10px;
+        font-size: 0.9rem;
+        color: #666;
+        background: #e2eaf3;
+    }
 
-        /* Button Container */
-        #admin-dashboard button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 12px 24px;
-            margin: 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
+</style>
 
-        #admin-dashboard button:hover {
-            background-color: #45a049;
-        }
-
-        /* Table Styling */
-        table {
-            width: 100%;
-            margin-top: 20px;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        th {
-            background-color: #f4f7f6;
-        }
-
-        /* Section Visibility */
-        #analytics-section, #contact-messages {
-            display: none;
-        }
-    </style>
 </head>
 
 
