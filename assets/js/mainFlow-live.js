@@ -104,6 +104,7 @@ try {
     const day = String(now.getDate()).padStart(2, '0');
     return `${month}/${day}/${year}`;
   }
+  let ipAddress;
   
   // Get User's IP Address
   async function getIPAddress() {
