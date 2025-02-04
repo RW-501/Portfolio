@@ -991,9 +991,10 @@
 
   <footer class="footer-container" aria-label="Footer Section for Ronald Wilson II's Portfolio and Social Links">
     <div class="footer-content">
-      <!-- Copyright and Main Portfolio Link -->
-      <p>&copy; 2024 <a href="https://www.facebook.com/Mr.RonWilson" target="_blank" title="Ronald Wilson II's Official Facebook Profile" aria-label="Facebook Profile of Ronald Wilson II">Ronald Wilson II</a>. All rights reserved.</p>
-  
+
+     <!-- Copyright and Main Portfolio Link -->
+<p>&copy; <span id="current-year"></span> <a href="https://www.facebook.com/Mr.RonWilson" target="_blank" title="Ronald Wilson II's Official Facebook Profile" aria-label="Facebook Profile of Ronald Wilson II">Ronald Wilson II</a>. All rights reserved.</p>
+
       <!-- Portfolio and Professional Links -->
       <p>
         For professional inquiries or collaborations, explore my
@@ -1078,6 +1079,17 @@ document.querySelector('.close').addEventListener('click', () => {
     window.location.href = 'https://rw-501.github.io/Portfolio/';
   }
 });
+
+
+
+// Function to update the year dynamically
+function updateYear() {
+  const currentYear = new Date().getFullYear(); // Get the current year
+  document.getElementById('current-year').textContent = currentYear; // Update the year in the HTML
+}
+
+// Call the function to update the year when the page loads
+updateYear();
 
 </script>
 
