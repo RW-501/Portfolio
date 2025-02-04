@@ -1055,6 +1055,37 @@
 
   <div id="bg"></div>
 
+
+
+
+
+<script>
+
+  // Save the last visited page when the user clicks on any navigation link
+document.querySelectorAll('.main-nav a').forEach(link => {
+  link.addEventListener('click', () => {
+    localStorage.setItem('lastPage', window.location.href);
+  });
+});
+
+// When the "Close Main" button is clicked, navigate back to the last visited page
+document.querySelector('.close').addEventListener('click', () => {
+  const lastPage = localStorage.getItem('lastPage');
+  if (lastPage) {
+    window.location.href = lastPage;
+  } else {
+    // If no last page is saved, just go to the home page
+    window.location.href = 'https://rw-501.github.io/Portfolio/';
+  }
+});
+
+</script>
+
+
+
+
+
+
   <script type="module">
     import { logPageView , sendMessageFunc } from './assets/js/mainFlow-live.js';
   
