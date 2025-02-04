@@ -76,8 +76,34 @@ body {
     display: grid;
     border-radius: 5px;}
 
+.main-Navigation {
+
+  width: 90%;
+}
+ .main-nav {
+
+  width: fit-content;
+}
 
 
+
+#header nav ul li a {
+    display: grid;
+    min-width: 7.5rem;
+    height: max-content;
+    line-height: normal;
+    padding: 1rem 1.25rem 1rem 1.45rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2rem;
+    font-size: 0.8rem;
+    border-bottom: 0;
+    word-wrap: normal;
+    max-height: max-content;
+    justify-items: center;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
 </style>
 
 
@@ -225,7 +251,7 @@ body {
       </div>
 
       <!-- Portfolio Navigation Section for Easy Access to Work Categories -->
-      <nav aria-label="Portfolio Navigation">
+      <nav class="portfolio-Navigation" aria-label="Portfolio Navigation">
         <p class="nav-description" style="display: none;">
           Explore a curated portfolio of Ronald Wilson II’s professional work, including Web Development, Post Production, and Graphic Design projects.
         </p>
@@ -258,7 +284,7 @@ body {
       </nav>
 
       <!-- Main Navigation Section with Detailed Titles and ARIA Labels -->
-      <nav aria-label="Main Site Navigation">
+      <nav class="main-Navigation" aria-label="Main Site Navigation">
         <ul class="main-nav">
           <li><a href="#about" title="Learn More About Ronald Wilson II">About Me</a></li> <!-- Link with descriptive title for SEO -->
           <li><a href="jects">Projects</a></li> <!-- More precise title for SEO -->
