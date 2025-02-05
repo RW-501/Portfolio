@@ -525,7 +525,8 @@ submitbtn.addEventListener("click", async (e) => {
       messageInput.value = ''; // Clear form inputs
       guestbookArea.innerHTML = ''; // Clear form inputs
 
-      
+      showToast("Thank you for signing my guestbook! ", "success");
+
       anonymousCheckbox.checked = false; // Reset checkbox
       await loadEntries(); // Refresh guestbook entries
     } catch (error) {
