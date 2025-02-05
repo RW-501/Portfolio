@@ -1202,7 +1202,7 @@ document.querySelectorAll('.main-nav a').forEach(link => {
 });
 
 // When the "Close Main" button is clicked, navigate back to the last visited page
-document.querySelector('.close').addEventListener('click', () => {
+document.querySelector('.close')?.addEventListener('click', () => {
   const lastPage = localStorage.getItem('lastPage');
   if (lastPage) {
     window.location.href = lastPage;
