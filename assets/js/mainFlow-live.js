@@ -296,12 +296,16 @@ function timeSincePost(timestamp) {
 // Function to load guestbook entries
 async function loadEntries() {
   try {
-
     const guestbookRef = collection(db, `Guestbook`);
     
-    // Order by timestamp (ascending or descending)
-    const querySnapshot = await getDocs(query(guestbookRef, orderBy("timestamp", "desc"))); // 'desc' for most recent first, 'asc' for oldest first
+    // Order by timestamp (most recent first)
+    const querySnapshot = await getDocs(query(guestbookRef, orderBy("timestamp", "desc"))); 
     const entriesDiv = document.getElementById("guestbookEntries");
+
+    if (!entriesDiv) {
+      console.error("Guestbook entries container not found.");
+      return;
+    }
 
     entriesDiv.innerHTML = ""; // Clear existing entries
 
@@ -311,11 +315,10 @@ async function loadEntries() {
       const sanitizedName = sanitizeInput(entry.name);
       const timestamp = entry.timestamp;
       const postID = doc.id;
-
       const timeAgo = timestamp ? timeSincePost(timestamp) : "Unknown time";
 
-      if (entry.status == 'active') {
-        // Enhanced entry display
+      if (entry.status === 'active') {
+        // Append guestbook entry
         entriesDiv.innerHTML += `
           <div class="entry" style="border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; border-radius: 8px; background: #f9f9f9;">
             <div class="guestbook-content">
@@ -324,7 +327,7 @@ async function loadEntries() {
             </div>
             <div class="guestbook-message">${sanitizedMessage}</div>
           </div>
-          ${entry.giftType && entry.public == true ? `
+          ${entry.giftType && entry.public ? `
             <div class='gifts'>
               <ul id="gifts-${postID}">
                 <!-- Gifts for this post will be injected here -->
@@ -332,19 +335,20 @@ async function loadEntries() {
             </div>
           ` : ""}
         `;
-        
-    
       }
     });
 
-
-    // Event Listener: Handle Anonymous Checkbox
+    // Ensure elements exist before adding event listeners
     const giftAnonymousCheckbox = document.getElementById("gift-anonymousCheckbox");
     const giftGuestNameInput = document.getElementById("gift-guestName");
 
-    giftAnonymousCheckbox.addEventListener("change", () => {
-      giftGuestNameInput.value = giftAnonymousCheckbox.checked ? "Anonymous" : "";
-    });
+    if (giftAnonymousCheckbox && giftGuestNameInput) {
+      giftAnonymousCheckbox.addEventListener("change", () => {
+        giftGuestNameInput.value = giftAnonymousCheckbox.checked ? "Anonymous" : "";
+      });
+    } else {
+      console.warn("Gift anonymous checkbox or guest name input not found.");
+    }
 
   } catch (error) {
     console.error("Error loading guestbook entries:", error);
@@ -352,7 +356,6 @@ async function loadEntries() {
 }
 
 window.loadEntries = loadEntries;
-
 
 loadEntries();
 
