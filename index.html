@@ -1327,6 +1327,19 @@ window.addEventListener('load', function() {
         console.log("Message field changed:", this.value);
       });
     });
+
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+  const link = document.getElementById("sayHelloLink");
+  link.classList.add("fade-glow");
+
+  // Remove animation after 10 seconds (optional)
+  setTimeout(() => {
+    link.style.animation = "none";
+  }, 10000);
+});
+
   </script>
   <!-- Scripts href="RESUME2022c.pdf" download -->
   <script src="assets/js/jquery.min.js"></script>
