@@ -270,3 +270,185 @@ function removeContactMSGFunc() {
     msg.style.display = "none";
     window.location.href = "https://rw-501.github.io/Portfolio/#";
 }
+
+
+
+// Utility function to sanitize user inputs
+function sanitizeInput(input) {
+  const div = document.createElement("div");
+  div.textContent = input;
+  return div.innerHTML;
+}
+
+
+
+
+
+
+// Helper function to calculate time since post
+function timeSincePost(timestamp) {
+  const now = new Date();
+  const postTime = timestamp.toDate(); // Assuming Firebase Timestamp object
+  const seconds = Math.floor((now - postTime) / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+  const years = Math.floor(days / 365);
+
+  if (seconds < 60) return `${seconds} seconds ago`;
+  if (minutes < 60) return `${minutes} minutes ago`;
+  if (hours < 24) return `${hours} hours ago`;
+  if (days < 365) return `${days} days ago`;
+  return `${years} years ago`;
+}
+  // Function to load guestbook entries
+// Function to load guestbook entries
+async function loadEntries() {
+  try {
+    console.log('pageID:', pageID);
+
+    const guestbookRef = collection(db, `Guestbook`);
+    
+    // Order by timestamp (ascending or descending)
+    const querySnapshot = await getDocs(query(guestbookRef, orderBy("timestamp", "desc"))); // 'desc' for most recent first, 'asc' for oldest first
+    const entriesDiv = document.getElementById("guestbookEntries");
+
+    entriesDiv.innerHTML = ""; // Clear existing entries
+
+    querySnapshot.forEach((doc) => {
+      const entry = doc.data();
+      const sanitizedMessage = sanitizeInput(entry.message);
+      const sanitizedName = sanitizeInput(entry.name);
+      const timestamp = entry.timestamp;
+      const postID = doc.id;
+
+      const timeAgo = timestamp ? timeSincePost(timestamp) : "Unknown time";
+
+      if (entry.status == 'active') {
+        // Enhanced entry display
+        entriesDiv.innerHTML += `
+          <div class="entry" style="border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; border-radius: 8px; background: #f9f9f9;">
+            <div class="guestbook-content">
+              <strong style="font-size: 1.1em; color: #333;">${sanitizedName}</strong>
+              <span style="font-size: 0.9em; color: #777;">${timeAgo}</span>
+            </div>
+            <div class="guestbook-message">${sanitizedMessage}</div>
+          </div>
+          ${entry.giftType && entry.public == true ? `
+            <div class='gifts'>
+              <ul id="gifts-${postID}">
+                <!-- Gifts for this post will be injected here -->
+              </ul>
+            </div>
+          ` : ""}
+        `;
+        
+    
+      }
+    });
+
+
+    // Event Listener: Handle Anonymous Checkbox
+    const giftAnonymousCheckbox = document.getElementById("gift-anonymousCheckbox");
+    const giftGuestNameInput = document.getElementById("gift-guestName");
+
+    giftAnonymousCheckbox.addEventListener("change", () => {
+      giftGuestNameInput.value = giftAnonymousCheckbox.checked ? "Anonymous" : "";
+    });
+
+  } catch (error) {
+    console.error("Error loading guestbook entries:", error);
+  }
+}
+
+window.loadEntries = loadEntries;
+
+
+loadEntries();
+
+
+
+
+
+
+
+
+
+
+
+const submitbtn = document.getElementById("submit-btn");
+
+// Handle form submission
+submitbtn.addEventListener("click", async (e) => {
+  console.log('Form submission triggered.');
+  const anonymousCheckbox = document.getElementById("anonymousCheckbox");
+
+  const nameInput = document.getElementById("guestName");
+  const messageInput = document.getElementById("guestMessage");
+  const name = sanitizeInput(anonymousCheckbox.checked ? "Anonymous" : nameInput.value.trim());
+  const message = sanitizeInput(messageInput.value.trim());
+  const userIP = await getUserIP(); // Fetch user IP address
+
+  let valid = true;
+
+  // Check if name and message are filled
+  if (!name) {
+    nameInput.style.borderColor = 'red'; // Highlight input with red border
+    valid = false;
+  } else {
+    nameInput.style.borderColor = ''; // Reset border color
+  }
+
+  if (!message) {
+    messageInput.style.borderColor = 'red'; // Highlight input with red border
+    valid = false;
+  } else {
+    messageInput.style.borderColor = ''; // Reset border color
+  }
+
+  // If both fields are valid, proceed with submission
+  if (valid) {
+    try {
+      const guestbookRef = collection(db, `A_Obituaries/${pageID}/Guestbook`);
+      await addDoc(guestbookRef, {
+        name,
+        message,
+        userIP,
+        status: "active",
+        timestamp: serverTimestamp(),
+      });
+      nameInput.value = ''; // Clear form inputs
+      messageInput.value = ''; // Clear form inputs
+      anonymousCheckbox.checked = false; // Reset checkbox
+      await loadEntries(); // Refresh guestbook entries
+    } catch (error) {
+      console.error("Error adding guestbook entry:", error);
+    }
+  } else {
+    // Optionally, you can add a message to the user here
+    showToast("Please fill in both the name and the message.");
+  }
+});
+
+
+
+  // Add an event listener to the "Send Flowers" button
+  const sendFlowersButton = document.getElementById("send-flowers");
+  sendFlowersButton.addEventListener("click", incrementFlowerCount);
+  
+  // Add an event listener to the "Send Gift" button
+  const sendGiftButton = document.getElementById("send-gift");
+  sendGiftButton.addEventListener("click", openGiftPopup);
+  
+
+const anonymousCheckbox = document.getElementById("anonymousCheckbox");
+const guestNameInput = document.getElementById("guestName");
+
+// Add event listener for checkbox change
+anonymousCheckbox.addEventListener("change", () => {
+  if (anonymousCheckbox.checked) {
+    guestNameInput.value = "Anonymous"; // Set the value to "Anonymous" when checked
+  } else {
+    guestNameInput.value = ""; // Clear the value when unchecked
+  }
+});

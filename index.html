@@ -301,9 +301,11 @@ body {
 
       <!-- Main Navigation Section with Detailed Titles and ARIA Labels -->
       <nav class="main-Navigation" aria-label="Main Site Navigation">
+
         <ul class="main-nav">
           <li><a href="#about" title="Learn More About Ronald Wilson II">About Me</a></li> <!-- Link with descriptive title for SEO -->
           <li><a href="#bizz" title="Explore My Business Ventures">Business</a></li> <!-- Link to business section with SEO title -->
+          <li><a href="#messages" title="Sign the guestbook">Say Hello!</a></li> <!-- Link to business section with SEO title -->
         </ul>
         <ul class="main-nav">
           <li><a href="https://www.linkedin.com/in/lrpinc/" title="Connect with Ronald Wilson II on LinkedIn">LinkedIn</a></li> <!-- LinkedIn profile link with SEO title -->
@@ -445,9 +447,45 @@ body {
   </div>
 </article>
 
+<!-- Messages Section -->
+<article id="messages" class="scroll-reveal box1 left">
 
+  <div id="flowerCount-area" class="" hidden>
+    <div id="flower-area">
+      <i class="fas fa-spa"></i>
+      <div id="flowerCount">0</div>
+    </div>
+    <div class="actions">
+      <button id="send-gift"><i class="fa fa-gift"></i> Send Gift</button>
+      <button id="send-flowers"><i class="fas fa-spa"></i> Send Flowers</button>
+    </div>
+  </div>  
 
+  <div class="guestbook form ">
+    <h2 class="changeable-text">Guestbook</h2>
+    <div id="guestbookForm">
+      <div>
+        <input type="text" id="guestName" placeholder="Your Name" required>
+      </div>
+      <div class="anonymousCheckboxArea">
+        <input type="checkbox" id="anonymousCheckbox">
+        <label for="anonymousCheckbox">Submit as Anonymous</label>
+      </div>
+  
+    </div>
+  
+    <div>
+      <textarea id="guestMessage" rows="4" placeholder="Share a memory of ${firstName}..." required></textarea>
+    </div>
+    <div>
+  
+      <button id="submit-btn" class="changeable-text">Submit</button>
+    </div>
+  
+    <div class="guestbook-entries" id="guestbookEntries"></div>
+  </div>
 
+</article>
 
 
 <!-- TechNoob Section -->
