@@ -434,12 +434,9 @@ submitbtn.addEventListener("click", async (e) => {
 
   // Add an event listener to the "Send Flowers" button
   const sendFlowersButton = document.getElementById("send-flowers");
-  sendFlowersButton.addEventListener("click", incrementFlowerCount);
+ // sendFlowersButton.addEventListener("click", incrementFlowerCount);
   
-  // Add an event listener to the "Send Gift" button
-  const sendGiftButton = document.getElementById("send-gift");
-  sendGiftButton.addEventListener("click", openGiftPopup);
-  
+
 
 const anonymousCheckbox = document.getElementById("anonymousCheckbox");
 const guestNameInput = document.getElementById("guestName");
