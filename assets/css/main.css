@@ -2640,7 +2640,12 @@ img{
 }
 
 
-
+.guestbook  {
+    display: grid;
+    gap: 2rem;
+    align-content: stretch;
+    margin: 2rem 0;
+}
 
 .guestbook h2 {
 	font-size: 1.5em;
