@@ -2729,21 +2729,20 @@ img{
 	}
 
 
-.guestbook button {
-	display: block;
-	width: 100%;
-	background-color: #28a745;
-	color: #fff;
-	padding: 10px;
-	font-size: 1em;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	outline: double;
-	outline-color: #a3a3a3;
-	font-weight: 700;
-
-}
+	.guestbook button {
+		display: block;
+		width: 100%;
+		background-color: #4f454b;
+		color: #fff;
+		padding: 0;
+		font-size: 1em;
+		border: none;
+		border-radius: 5px;
+		cursor: pointer;
+		outline: double;
+		outline-color: #a3a3a3;
+		font-weight: 700;
+	}
 
 .guestbook button:hover {
 	background: linear-gradient(180deg, #008000, #00000033);

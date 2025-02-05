@@ -273,15 +273,6 @@ function removeContactMSGFunc() {
 
 
 
-// Utility function to sanitize user inputs
-function sanitizeInput(input) {
-  const div = document.createElement("div");
-  div.textContent = input;
-  return div.innerHTML;
-}
-
-
-
 
 
 
