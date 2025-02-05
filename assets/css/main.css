@@ -2796,7 +2796,7 @@ img{
 	100% { opacity: 0.5; text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
   }
   
-  .fadeGlow {
+  .fade-glow {
 	animation: fadeGlow 2s infinite ease-in-out;
 	transition: transform 0.3s ease;
   }
