@@ -184,8 +184,9 @@ font-size:3.5rem;
     overflow: hidden;
 }
 
-
-
+#header {
+	margin-bottom: 4rem;
+}
 
 
 .mainWebsite{
