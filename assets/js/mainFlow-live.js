@@ -296,7 +296,6 @@ function timeSincePost(timestamp) {
 // Function to load guestbook entries
 async function loadEntries() {
   try {
-    console.log('pageID:', pageID);
 
     const guestbookRef = collection(db, `Guestbook`);
     
