@@ -378,7 +378,7 @@ submitbtn.addEventListener("click", async (e) => {
   const messageInput = document.getElementById("guestMessage");
   const name = sanitizeInput(anonymousCheckbox.checked ? "Anonymous" : nameInput.value.trim());
   const message = sanitizeInput(messageInput.value.trim());
-  const userIP = await getUserIP(); // Fetch user IP address
+  const userIP = await getIPAddress(); // Fetch user IP address
 
   let valid = true;
 
