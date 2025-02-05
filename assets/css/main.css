@@ -2796,18 +2796,10 @@ img{
 	100% { opacity: 0.5; text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
   }
   
-  #sayHelloLink {
-	font-size: 1.2rem;
-	color: #fff; /* Adjust for dark or light themes */
-	text-decoration: none;
-	font-weight: bold;
-	display: inline-block;
+  .fadeGlow {
 	animation: fadeGlow 2s infinite ease-in-out;
 	transition: transform 0.3s ease;
   }
   
-  #sayHelloLink:hover {
-	transform: scale(1.1);
-	text-shadow: 0 0 15px rgba(255, 255, 255, 1), 0 0 30px rgba(0, 123, 255, 0.8);
-  }
+  
   
