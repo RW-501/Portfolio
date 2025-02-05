@@ -2745,7 +2745,7 @@ img{
 	}
 
 .guestbook button:hover {
-	background: linear-gradient(180deg, #008000, #00000033);
+	background: linear-gradient(180deg, #2b2c2b, #00000033);
 	font-weight: 800;
 	padding: 15px;
 
