@@ -400,7 +400,7 @@ submitbtn.addEventListener("click", async (e) => {
   // If both fields are valid, proceed with submission
   if (valid) {
     try {
-      const guestbookRef = collection(db, `A_Obituaries/${pageID}/Guestbook`);
+      const guestbookRef = collection(db, `Guestbook`);
       await addDoc(guestbookRef, {
         name,
         message,
