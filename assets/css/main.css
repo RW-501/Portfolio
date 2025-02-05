@@ -2665,7 +2665,7 @@ img{
 }
 
 .actions button:hover {
-	background-color: #0056b3;
+	background-color: #656e77;
 }
 
 .guestbook  {
@@ -2686,9 +2686,9 @@ img{
 .guestbook input[type=text]:focus,
 .guestbook textarea:focus {
   margin-bottom: 10px;
-  border: 1px solid #4caf50; /* Add a highlight color */
+  border: 1px solid #585b6c; /* Add a highlight color */
   border-radius: 8px; /* Slightly increase the border-radius for focus */
-  box-shadow: 0 0 8px rgba(76, 175, 80, 0.5); /* Add a subtle green glow */
+  box-shadow: 0 0 8px rgba(82, 81, 88, 0.5); /* Add a subtle green glow */
   outline: none; /* Remove the default outline */
   background-color: #f9fff9; /* Optional: Add a slightly different background color */
 }
