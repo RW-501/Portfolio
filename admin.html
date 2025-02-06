@@ -191,13 +191,15 @@
 
         <div>
             <button id="view-analytics-btn">View Analytics</button>
+            <button id="read-contact-btn">Read Contact Messages</button>
+            <button id="Guestbook-btn">Guestbook Messages</button>
+
             <button id="manage-social-media-btn">Manage Social Media</button>
             <button id="manage-websites-btn">Manage Websites</button>
-            <button id="read-contact-btn">Read Contact Messages</button>
         </div>
 
         <!-- Analytics Section -->
-        <div id="analytics-section">
+        <div id="analytics-section" class="views" >
             <h3>Analytics Data</h3>
             <table id="analyticsTable">
                 <thead>
@@ -212,13 +214,13 @@
                         <th>Date</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody  id="analyticsTableBody">
                 </tbody>
             </table>
         </div>
 
         <!-- Contact Messages Section -->
-        <div id="contact-messages">
+        <div id="contact-messages" class="views" >
             <h3>Contact Messages</h3>
             <table id="contactTable">
                 <thead>
@@ -229,12 +231,31 @@
                         <th>Timestamp</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody  id="contactTableBody">
                 </tbody>
             </table>
         </div>
     </div>
 
+
+        <!-- Guestbook Messages Section -->
+        <div id="Guestbook-messages" class="views" >
+            <h3>Contact Messages</h3>
+            <table id="GuestbookTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Message</th>
+                        <th>Timestamp</th>
+                        <th>UserIP</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody  id="GuestbookTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
 
 
     <!-- Firebase Scripts (using Firebase v9) -->
@@ -284,7 +305,7 @@
         // Fetch Analytics Data
   // Fetch Analytics Data
 async function fetchAnalytics() {
-    const logsTableBody = document.getElementById("analyticsTable");
+    const logsTableBody = document.getElementById("analyticsTableBody");
     logsTableBody.innerHTML = ""; // Clear previous logs
     const portfolioAnalyticsRef = collection(db, "portfolioAnalytics");
 
@@ -292,9 +313,18 @@ async function fetchAnalytics() {
         const querySnapshot = await getDocs(portfolioAnalyticsRef);
         querySnapshot.forEach((doc) => {
             const data = doc.data();
-            
+            const mainRow = document.createElement("tr");
+
+            mainRow.innerHTML = `
+                        <td>${data.ipAddress || "N/A"}</td>
+                        <td>${data.viewed.entry.location ? `${data.viewed.entry.location.city}, ${data.viewed.entry.location.state}, ${entry.location.country}` : "N/A"}</td>
+                        <td>${data.currentDate || "N/A"}</td>
+                    `;
             // Check if the 'viewed' array exists and is an array before iterating
             if (Array.isArray(data.viewed)) {
+
+                const area = document.createElement("div");
+
                 data.viewed.forEach((entry) => {
                     const row = document.createElement("tr");
 
@@ -309,24 +339,50 @@ async function fetchAnalytics() {
                         <td>${entry.currentDate || "N/A"}</td>
                     `;
 
-                    logsTableBody.appendChild(row);
+                    area.appendChild(row);
                 });
+                mainRow.appendChild(area);
+
             } else {
                 console.warn(`No 'viewed' data found for document with ID: ${doc.id}`);
             }
+
+
         });
     } catch (error) {
         console.error("Error fetching logs:", error);
     }
+    logsTableBody.appendChild(mainRow);
+
 }
 
 
-// Event listener for the "Fetch Logs" button
-//document.getElementById("fetchLogsBtn").addEventListener("click", fetchLogs);
+
+        // Fetch Contact Messages
+        async function fetchGuestbookMessages() {
+            const GuestbookTable = document.getElementById('GuestbookTableBody');
+            GuestbookTable.innerHTML = '';
+    
+            const querySnapshot = await getDocs(collection(db, 'Guestbook'));
+            querySnapshot.forEach(doc => {
+                const data = doc.data();
+                const row = GuestbookTable.insertRow();
+                row.innerHTML = `
+    <td>${data.name}</td>
+    <td>${data.message}</td>
+    <td>${data.timestamp.toDate().toLocaleString()}</td>
+ <td>${data.userIP}</td>
+ <td>${data.status}</td>
+
+                `;
+            });
+        }
+        
+
     
         // Fetch Contact Messages
         async function fetchContactMessages() {
-            const contactTable = document.getElementById('contactTable').getElementsByTagName('tbody')[0];
+            const contactTable = document.getElementById('contactTableBody');
             contactTable.innerHTML = '';
     
             const querySnapshot = await getDocs(collection(db, 'portfolioContact'));
@@ -341,18 +397,39 @@ async function fetchAnalytics() {
                 `;
             });
         }
-    
-        // Button Event Listeners
-        document.getElementById('view-analytics-btn').addEventListener('click', () => {
-            document.getElementById('analytics-section').style.display = 'block';
-            fetchAnalytics();
-        });
-    
-        document.getElementById('read-contact-btn').addEventListener('click', () => {
-            document.getElementById('contact-messages').style.display = 'block';
-            fetchContactMessages();
-        });
-    
+
+
+// Function to hide all elements with the class "views"
+function hideAllViews() {
+    document.querySelectorAll('.views').forEach(view => {
+        view.style.display = 'none';
+    });
+}
+
+// Event Listeners to show specific sections
+document.getElementById('view-analytics-btn').addEventListener('click', () => {
+    hideAllViews(); // Hide all "views" sections
+    document.getElementById('analytics-section').style.display = 'block';
+    fetchAnalytics();
+});
+
+document.getElementById('read-contact-btn').addEventListener('click', () => {
+    hideAllViews();
+    document.getElementById('contact-messages').style.display = 'block';
+    fetchContactMessages();
+});
+
+document.getElementById('Guestbook-btn').addEventListener('click', () => {
+    hideAllViews();
+    document.getElementById('Guestbook-messages').style.display = 'block';
+    fetchGuestbookMessages();
+});
+
+
+
+
+
+
         // Logout function
         function logout() {
             signOut(auth).then(() => {
