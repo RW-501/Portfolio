@@ -407,11 +407,15 @@ function timeSincePost(timestamp) {
 // Function to load guestbook entries
 async function loadEntries() {
   try {
+    const entriesDiv = document.getElementById("guestbookEntries");
+if(!entriesDiv){
+
+  return;
+}
     const guestbookRef = collection(db, `Guestbook`);
     
     // Order by timestamp (most recent first)
     const querySnapshot = await getDocs(query(guestbookRef, orderBy("timestamp", "desc"))); 
-    const entriesDiv = document.getElementById("guestbookEntries");
 
     if (!entriesDiv) {
       console.error("Guestbook entries container not found.");
@@ -480,10 +484,10 @@ loadEntries();
 
 
 
-const submitbtn = document.getElementById("submit-btn");
+const submitbtn= document.getElementById("submit-btn");
 
 // Handle form submission
-submitbtn.addEventListener("click", async (e) => {
+if(submitbtn) submitbtn.addEventListener("click", async (e) => {
   console.log('Form submission triggered.');
   const anonymousCheckbox = document.getElementById("anonymousCheckbox");
 
