@@ -3,7 +3,7 @@
 // Scroll Button Functionality
 const mybutton = document.getElementById("scrollBtn");
 
-window.onscroll = function () {
+if(mybutton) window.onscroll = function () {
     scrollFunction();
 };
 
