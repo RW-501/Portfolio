@@ -200,33 +200,45 @@
             <button id="manage-websites-btn">Manage Websites</button>
         </div>
 
-        <!-- Analytics Section -->
-        <div id="analytics-section" class="views" >
+        <div id="analytics-section" class="views">
             <h3>Analytics Data</h3>
+        
+            <label for="sortBy">Sort By:</label>
+            <select id="sortBy">
+                <option value="date">Date</option>
+                <option value="timeOnPage">Time on Page</option>
+                <option value="location">Location</option>
+            </select>
+        
+            <label for="filterDevice">Filter by Device:</label>
+            <select id="filterDevice">
+                <option value="all">All</option>
+                <option value="mobile">Mobile</option>
+                <option value="desktop">Desktop</option>
+            </select>
+        
+            <button id="refreshAnalytics">Update Data</button>
+        
             <table id="analyticsTable">
                 <thead>
                     <tr>
-                        <th>Page</th>
+                        <th>IP Address</th>
+                        <th>Guest Name</th>
+                        <th>Guestbook Message</th>
+                        <th>Contact Message</th>
+                        <th>Location</th>
+                        <th>Time of Visit</th>
+                        <th>Page Views</th>
+                        <th>Time on Page (s)</th>
                         <th>Device Type</th>
                         <th>Browser</th>
-                        <th>OS</th>
-                        <th>Time on Page (s)</th>
-                        <th>Screen Resolution</th>
-                        <th>Location</th>
-                        <th>Date</th>
+                        <th>Referral</th>
                     </tr>
                 </thead>
-                <tbody  id="analyticsTableBody">
-                </tbody>
+                <tbody id="analyticsTableBody"></tbody>
             </table>
         </div>
-
-        <td>${userIP || "N/A"}</td>
-        <td>${guestName}</td>
-        <td>${guestbookMessage}</td>
-        <td>${contactMessage}</td>
-        <td>${data.viewed ? `${data.viewed.entry.location.city}, ${data.viewed.entry.location.state}` : "N/A"}</td>
-        <td>${data.currentDate || "N/A"}</td>
+        
 
 
         <!-- Contact Messages Section -->
@@ -381,65 +393,133 @@ function clearCache() {
         const guestbookData = await fetchDataWithCache("guestbookData", fetchGuestbookMessages);
         const contactData = await fetchDataWithCache("contactData", fetchContactMessages);
 
+        let pageViews = {}; // Track page views per user IP
+
         querySnapshot.forEach(doc => {
             const data = doc.data();
             const userIP = data.ipAddress;
             const guestName = data.guestName || "Visitor";
 
-            // Match with Guestbook
+            // Count page views per user
+            if (!pageViews[userIP]) {
+                pageViews[userIP] = 0;
+            }
+            pageViews[userIP] += data.viewed.length;
+
+            // Match Guestbook Messages
             const guestbookEntry = guestbookData.find(entry => entry.userIP === userIP);
             const guestbookMessage = guestbookEntry ? guestbookEntry.message : "None";
 
-            // Match with Contacts
+            // Match Contact Messages
             const contactEntry = contactData.find(entry => entry.userIP === userIP);
             const contactMessage = contactEntry ? contactEntry.message : "None";
 
-            const mainRow = document.createElement("tr");
-            mainRow.innerHTML = `
-                <td>${userIP || "N/A"}</td>
-                <td>${guestName}</td>
-                <td>${guestbookMessage}</td>
-                <td>${contactMessage}</td>
-                <td>${data.viewed ? `${data.viewed.entry.location.city}, ${data.viewed.entry.location.state}` : "N/A"}</td>
-                <td>${data.currentDate || "N/A"}</td>
-            `;
-            // Check if the 'viewed' array exists and is an array before iterating
-            if (Array.isArray(data.viewed)) {
+            // Process each viewed entry
+            data.viewed.forEach(entry => {
+                const timeCategory = categorizeTime(entry.currentDate);
+                const mainRow = document.createElement("tr");
 
-const area = document.createElement("div");
+                mainRow.innerHTML = `
+                    <td>${userIP || "N/A"}</td>
+                    <td>${guestName}</td>
+                    <td>${guestbookMessage}</td>
+                    <td>${contactMessage}</td>
+                    <td>${entry.location ? `${entry.location.city || 'Unknown'}, ${entry.location.state || 'Unknown'}, ${entry.location.country || 'Unknown'}` : "N/A"}</td>
+                    <td>${timeCategory}</td>
+                    <td>${pageViews[userIP]}</td>
+                    <td>${entry.timeOnPage.toFixed(2) || "0"}</td>
+                    <td>${entry.deviceType || "N/A"}</td>
+                    <td>${entry.browser || "N/A"}</td>
+                    <td>${entry.referral || "Direct"}</td>
+                `;
 
-data.viewed.forEach((entry) => {
-    const row = document.createElement("tr");
-
-    row.innerHTML = `
-        <td>${entry.page || "N/A"}</td>
-        <td>${entry.deviceType || "N/A"}</td>
-        <td>${entry.browser || "N/A"}</td>
-        <td>${entry.operatingSystem || "N/A"}</td>
-        <td>${entry.timeOnPage || "N/A"}</td>
-        <td>${entry.screenWidth}x${entry.screenHeight}</td>
-        <td>${entry.location ? `${entry.location.city || 'Unknown'}, ${entry.location.state || 'Unknown'}, ${entry.location.country || 'Unknown'}` : "N/A"}</td>
-        <td>${entry.currentDate || "N/A"}</td>
-        `;
-
-    area.appendChild(row);
-});
-mainRow.appendChild(area);
-
-} else {
-
-}
-
-
-
-            logsTableBody.appendChild(mainRow);
-            analyticsData.push({ ...data, guestbookMessage, contactMessage });
+                logsTableBody.appendChild(mainRow);
+                analyticsData.push({ ...data, guestbookMessage, contactMessage, timeCategory, pageViews: pageViews[userIP] });
+            });
         });
 
         localStorage.setItem("analyticsData", JSON.stringify(analyticsData));
         resolve(analyticsData);
     });
 }
+
+
+function categorizeTime(dateString) {
+    if (!dateString) return "Unknown";
+
+    const dateParts = dateString.split("/");
+    const currentDate = new Date(`${dateParts[2]}-${dateParts[0]}-${dateParts[1]}`);
+    const hours = currentDate.getHours();
+
+    if (hours >= 5 && hours < 12) return "Morning";
+    if (hours >= 12 && hours < 17) return "Afternoon";
+    if (hours >= 17 && hours < 21) return "Evening";
+    return "Night";
+}
+
+document.getElementById("sortBy").addEventListener("change", (event) => {
+    let analyticsData = JSON.parse(localStorage.getItem("analyticsData")) || [];
+    const sortBy = event.target.value;
+
+    analyticsData.sort((a, b) => {
+        if (sortBy === "date") {
+            return new Date(a.currentDate) - new Date(b.currentDate);
+        } else if (sortBy === "timeOnPage") {
+            return b.timeOnPage - a.timeOnPage;
+        } else if (sortBy === "location") {
+            return (a.location?.city || "").localeCompare(b.location?.city || "");
+        }
+    });
+
+    renderAnalyticsTable(analyticsData);
+});
+
+document.getElementById("filterDevice").addEventListener("change", (event) => {
+    let analyticsData = JSON.parse(localStorage.getItem("analyticsData")) || [];
+    const filterBy = event.target.value;
+
+    if (filterBy !== "all") {
+        analyticsData = analyticsData.filter(entry => entry.deviceType === filterBy);
+    }
+
+    renderAnalyticsTable(analyticsData);
+});
+
+function renderAnalyticsTable(analyticsData) {
+    const logsTableBody = document.getElementById("analyticsTableBody");
+    logsTableBody.innerHTML = "";
+
+    analyticsData.forEach(data => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${data.ipAddress || "N/A"}</td>
+            <td>${data.guestName}</td>
+            <td>${data.guestbookMessage}</td>
+            <td>${data.contactMessage}</td>
+            <td>${data.location ? `${data.location.city || 'Unknown'}, ${data.location.state || 'Unknown'}, ${data.location.country || 'Unknown'}` : "N/A"}</td>
+            <td>${data.timeCategory}</td>
+            <td>${data.pageViews}</td>
+            <td>${data.timeOnPage.toFixed(2) || "0"}</td>
+            <td>${data.deviceType || "N/A"}</td>
+            <td>${data.browser || "N/A"}</td>
+            <td>${data.referral || "Direct"}</td>
+        `;
+        logsTableBody.appendChild(row);
+    });
+}
+
+
+
+
+document.getElementById("refreshAnalytics").addEventListener("click", async () => {
+    localStorage.removeItem("analyticsData");
+    await fetchAnalytics();
+    showToast("Analytics data updated!", "success");
+});
+
+
+
+
 
 
 async function fetchGuestbookMessages() {
