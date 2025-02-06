@@ -302,7 +302,8 @@ try {
           message: contactMessage,
           ipAddress: ipAddress,
           location: locationData,
-          currentDate: currentDate
+          currentDate: currentDate,
+          status: "unread"
       };
   
       try {

@@ -189,6 +189,8 @@
         <h2>Admin Dashboard</h2>
         <p>Welcome, <span id="admin-name"></span></p>
 
+        <button id="updateDataBtn">Update Data</button>
+
         <div>
             <button id="view-analytics-btn">View Analytics</button>
             <button id="read-contact-btn">Read Contact Messages</button>
@@ -218,6 +220,14 @@
                 </tbody>
             </table>
         </div>
+
+        <td>${userIP || "N/A"}</td>
+        <td>${guestName}</td>
+        <td>${guestbookMessage}</td>
+        <td>${contactMessage}</td>
+        <td>${data.viewed ? `${data.viewed.entry.location.city}, ${data.viewed.entry.location.state}` : "N/A"}</td>
+        <td>${data.currentDate || "N/A"}</td>
+
 
         <!-- Contact Messages Section -->
         <div id="contact-messages" class="views" >
@@ -339,105 +349,224 @@ function logout() {
     });
 }
 
+async function fetchDataWithCache(cacheKey, fetchFunction) {
+    const cachedData = localStorage.getItem(cacheKey);
 
+    if (cachedData) {
+        console.log(`Loaded ${cacheKey} from cache.`);
+        return JSON.parse(cachedData);
+    }
 
+    const freshData = await fetchFunction();
+    localStorage.setItem(cacheKey, JSON.stringify(freshData));
+    return freshData;
+}
 
-        // Fetch Analytics Data
+function clearCache() {
+    localStorage.removeItem("analyticsData");
+    localStorage.removeItem("guestbookData");
+    localStorage.removeItem("contactData");
+    showToast("Cache Cleared! Fetching new data...", "info");
+}
+
   // Fetch Analytics Data
-async function fetchAnalytics() {
-    const logsTableBody = document.getElementById("analyticsTableBody");
-    logsTableBody.innerHTML = ""; // Clear previous logs
-    const portfolioAnalyticsRef = collection(db, "portfolioAnalytics");
+  async function fetchAnalytics() {
+    return new Promise(async (resolve) => {
+        const logsTableBody = document.getElementById("analyticsTableBody");
+        logsTableBody.innerHTML = "";
 
-    try {
-        const querySnapshot = await getDocs(portfolioAnalyticsRef);
-        querySnapshot.forEach((doc) => {
+        const querySnapshot = await getDocs(collection(db, "portfolioAnalytics"));
+        let analyticsData = [];
+
+        const guestbookData = await fetchDataWithCache("guestbookData", fetchGuestbookMessages);
+        const contactData = await fetchDataWithCache("contactData", fetchContactMessages);
+
+        querySnapshot.forEach(doc => {
             const data = doc.data();
-            const mainRow = document.createElement("tr");
+            const userIP = data.ipAddress;
+            const guestName = data.guestName || "Visitor";
 
+            // Match with Guestbook
+            const guestbookEntry = guestbookData.find(entry => entry.userIP === userIP);
+            const guestbookMessage = guestbookEntry ? guestbookEntry.message : "None";
+
+            // Match with Contacts
+            const contactEntry = contactData.find(entry => entry.userIP === userIP);
+            const contactMessage = contactEntry ? contactEntry.message : "None";
+
+            const mainRow = document.createElement("tr");
             mainRow.innerHTML = `
-                        <td>${data.ipAddress || "N/A"}</td>
-                        <td>${data.viewed.entry.location ? `${data.viewed.entry.location.city}, ${data.viewed.entry.location.state}, ${entry.location.country}` : "N/A"}</td>
-                        <td>${data.currentDate || "N/A"}</td>
-                    `;
+                <td>${userIP || "N/A"}</td>
+                <td>${guestName}</td>
+                <td>${guestbookMessage}</td>
+                <td>${contactMessage}</td>
+                <td>${data.viewed ? `${data.viewed.entry.location.city}, ${data.viewed.entry.location.state}` : "N/A"}</td>
+                <td>${data.currentDate || "N/A"}</td>
+            `;
             // Check if the 'viewed' array exists and is an array before iterating
             if (Array.isArray(data.viewed)) {
 
-                const area = document.createElement("div");
+const area = document.createElement("div");
 
-                data.viewed.forEach((entry) => {
-                    const row = document.createElement("tr");
+data.viewed.forEach((entry) => {
+    const row = document.createElement("tr");
 
-                    row.innerHTML = `
-                        <td>${entry.page || "N/A"}</td>
-                        <td>${entry.deviceType || "N/A"}</td>
-                        <td>${entry.browser || "N/A"}</td>
-                        <td>${entry.operatingSystem || "N/A"}</td>
-                        <td>${entry.timeOnPage || "N/A"}</td>
-                        <td>${entry.screenWidth}x${entry.screenHeight}</td>
-                        <td>${entry.location ? `${entry.location.city}, ${entry.location.state}, ${entry.location.country}` : "N/A"}</td>
-                        <td>${entry.currentDate || "N/A"}</td>
-                    `;
+    row.innerHTML = `
+        <td>${entry.page || "N/A"}</td>
+        <td>${entry.deviceType || "N/A"}</td>
+        <td>${entry.browser || "N/A"}</td>
+        <td>${entry.operatingSystem || "N/A"}</td>
+        <td>${entry.timeOnPage || "N/A"}</td>
+        <td>${entry.screenWidth}x${entry.screenHeight}</td>
+        <td>${entry.location ? `${entry.location.city || 'Unknown'}, ${entry.location.state || 'Unknown'}, ${entry.location.country || 'Unknown'}` : "N/A"}</td>
+        <td>${entry.currentDate || "N/A"}</td>
+        `;
 
-                    area.appendChild(row);
-                });
-                mainRow.appendChild(area);
+    area.appendChild(row);
+});
+mainRow.appendChild(area);
 
-            } else {
-                console.warn(`No 'viewed' data found for document with ID: ${doc.id}`);
-            }
-
-
-        });
-    } catch (error) {
-        console.error("Error fetching logs:", error);
-    }
-    logsTableBody.appendChild(mainRow);
+} else {
 
 }
 
 
 
-        // Fetch Contact Messages
-        async function fetchGuestbookMessages() {
-            const GuestbookTable = document.getElementById('GuestbookTableBody');
-            GuestbookTable.innerHTML = '';
-    
-            const querySnapshot = await getDocs(collection(db, 'Guestbook'));
-            querySnapshot.forEach(doc => {
-                const data = doc.data();
-                const row = GuestbookTable.insertRow();
-                row.innerHTML = `
-    <td>${data.name}</td>
-    <td>${data.message}</td>
-    <td>${data.timestamp.toDate().toLocaleString()}</td>
- <td>${data.userIP}</td>
- <td>${data.status}</td>
+            logsTableBody.appendChild(mainRow);
+            analyticsData.push({ ...data, guestbookMessage, contactMessage });
+        });
 
-                `;
-            });
-        }
-        
+        localStorage.setItem("analyticsData", JSON.stringify(analyticsData));
+        resolve(analyticsData);
+    });
+}
 
-    
-        // Fetch Contact Messages
-        async function fetchContactMessages() {
-            const contactTable = document.getElementById('contactTableBody');
-            contactTable.innerHTML = '';
-    
-            const querySnapshot = await getDocs(collection(db, 'portfolioContact'));
-            querySnapshot.forEach(doc => {
-                const data = doc.data();
-                const row = contactTable.insertRow();
-                row.innerHTML = `
-                    <td>${data.name}</td>
-                    <td>${data.email}</td>
-                    <td>${data.message}</td>
-                    <td>${data.timestamp.toDate().toLocaleString()}</td>
-                `;
-            });
-        }
 
+async function fetchGuestbookMessages() {
+    return new Promise(async (resolve) => {
+        const GuestbookTable = document.getElementById("GuestbookTableBody");
+        GuestbookTable.innerHTML = "";
+
+        const querySnapshot = await getDocs(collection(db, "Guestbook"));
+        let guestbookData = [];
+
+        querySnapshot.forEach(doc => {
+            const data = doc.data();
+            guestbookData.push({ ...data, id: doc.id });
+
+            const mainRow = GuestbookTable.insertRow();
+            mainRow.innerHTML = `
+                <td>${data.name}</td>
+                <td>${data.message}</td>
+                <td>${data.timestamp.toDate().toLocaleString()}</td>
+                <td>${data.userIP}</td>
+                <td>
+                    <select class="status-dropdown" data-id="${doc.id}">
+                        <option value="active" ${data.status === 'active' ? 'selected' : ''}>Active</option>
+                        <option value="pending" ${data.status === 'pending' ? 'selected' : ''}>Pending</option>
+                        <option value="archived" ${data.status === 'archived' ? 'selected' : ''}>Archived</option>
+                    </select>
+                </td>
+            `;
+        });
+
+        localStorage.setItem("guestbookData", JSON.stringify(guestbookData));
+        resolve(guestbookData);
+    });
+
+
+
+    // Attach event listeners to all dropdowns
+    document.querySelectorAll('.status-dropdown').forEach(select => {
+        select.addEventListener('change', async (event) => {
+            const newStatus = event.target.value;
+            const docId = event.target.getAttribute('data-id');
+
+            try {
+                await updateDoc(doc(db, 'Guestbook', docId), { status: newStatus });
+                showToast(`Status updated to: ${newStatus}`, "success");
+            } catch (error) {
+                console.error("Error updating status:", error);
+                showToast("Failed to update status", "error");
+            }
+        });
+    });
+}
+
+// Fetch Contact Messages
+async function fetchContactMessages() {
+    return new Promise(async (resolve) => {
+        const contactTable = document.getElementById("contactTableBody");
+        contactTable.innerHTML = "";
+
+        const querySnapshot = await getDocs(collection(db, "portfolioContact"));
+        let contactData = [];
+
+        querySnapshot.forEach(doc => {
+            const data = doc.data();
+            contactData.push({ ...data, id: doc.id });
+
+            const mainRow = contactTable.insertRow();
+            mainRow.innerHTML = `
+                <td>${data.name}</td>
+                <td>${data.email}</td>
+                <td>${data.message}</td>
+                <td>${data.timestamp.toDate().toLocaleString()}</td>
+                <td>
+                    <select class="status-dropdown" data-id="${doc.id}">
+                        <option value="unread" ${data.status === 'unread' ? 'selected' : ''}>Unread</option>
+                        <option value="read" ${data.status === 'read' ? 'selected' : ''}>Read</option>
+                        <option value="resolved" ${data.status === 'resolved' ? 'selected' : ''}>Resolved</option>
+                    </select>
+                </td>
+            `;
+
+            if (Array.isArray(data.location)) {
+
+const area = document.createElement("div");
+
+data.location.forEach((entry) => {
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+        <td>${entry.city || "N/A"}</td>
+        <td>${entry.state || "N/A"}</td>
+        <td>${entry.zip || "N/A"}</td>
+        <td>${entry.country || "N/A"}</td>
+        <td>${entry.location ? `${entry.location.city || 'Unknown'}, ${entry.location.state || 'Unknown'}, ${entry.location.country || 'Unknown'}` : "N/A"}</td>
+    `;
+
+    area.appendChild(row);
+});
+mainRow.appendChild(area);
+            }
+
+
+
+        });
+
+        localStorage.setItem("contactData", JSON.stringify(contactData));
+        resolve(contactData);
+    });
+
+
+
+    // Attach event listeners to all dropdowns
+    document.querySelectorAll('.status-dropdown').forEach(select => {
+        select.addEventListener('change', async (event) => {
+            const newStatus = event.target.value;
+            const docId = event.target.getAttribute('data-id');
+
+            try {
+                await updateDoc(doc(db, 'portfolioContact', docId), { status: newStatus });
+                showToast(`Status updated to: ${newStatus}`, "success");
+            } catch (error) {
+                console.error("Error updating status:", error);
+                showToast("Failed to update status", "error");
+            }
+        });
+    });
+}
 
 // Function to hide all elements with the class "views"
 function hideAllViews() {
@@ -468,6 +597,12 @@ document.getElementById('Guestbook-btn').addEventListener('click', () => {
 
 
 
+document.getElementById("updateDataBtn").addEventListener("click", async () => {
+    clearCache();
+    await fetchAnalytics();
+    await fetchGuestbookMessages();
+    await fetchContactMessages();
+});
 
 
    
