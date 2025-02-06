@@ -68,7 +68,6 @@
     /* Login Section */
     #login-section, #admin-dashboard {
         width: 100%;
-        max-width: 700px;
         margin: 20px auto;
         padding: 20px;
         background: #fff;
@@ -303,6 +302,12 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         const analytics = getAnalytics(app);
+
+
+        import { } from "https://rw-501.github.io/Portfolio/assets/js/mainFlow-live.js";
+
+
+
     // Function to check login state on page load
 function checkLoginStatus() {
     const userData = JSON.parse(localStorage.getItem('userData'));
@@ -591,7 +596,7 @@ async function fetchContactMessages() {
                 <td>${data.name}</td>
                 <td>${data.email}</td>
                 <td>${data.message}</td>
-                <td>${data.timestamp.toDate().toLocaleString()}</td>
+                <td>${data.currentDate}</td>
                 <td>
                     <select class="status-dropdown" data-id="${doc.id}">
                         <option value="unread" ${data.status === 'unread' ? 'selected' : ''}>Unread</option>
