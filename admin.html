@@ -151,6 +151,42 @@
         background: #e2eaf3;
     }
 
+
+
+
+
+
+
+
+
+
+
+    .details-container {
+    background: #f9f9f9;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+.session-entry {
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.toggle-details {
+    cursor: pointer;
+    padding: 5px 10px;
+    border: none;
+    background: #007bff;
+    color: white;
+    border-radius: 4px;
+}
+
+.toggle-details:hover {
+    background: #0056b3;
+}
+
 </style>
 
 </head>
@@ -226,19 +262,14 @@
                         <th>Guestbook Message</th>
                         <th>Contact Message</th>
                         <th>Location</th>
-                        <th>Time of Visit</th>
                         <th>Page Views</th>
-                        <th>Time on Page (s)</th>
-                        <th>Device Type</th>
-                        <th>Browser</th>
-                        <th>Referral</th>
+                        <th>Details</th>
                     </tr>
                 </thead>
                 <tbody id="analyticsTableBody"></tbody>
             </table>
         </div>
         
-
 
         <!-- Contact Messages Section -->
         <div id="contact-messages" class="views" >
@@ -394,52 +425,106 @@ function clearCache() {
 
         const querySnapshot = await getDocs(collection(db, "portfolioAnalytics"));
         let analyticsData = [];
+        let groupedData = {};
 
         const guestbookData = await fetchDataWithCache("guestbookData", fetchGuestbookMessages);
         const contactData = await fetchDataWithCache("contactData", fetchContactMessages);
 
-        let pageViews = {}; // Track page views per user IP
-
+        // Group data by IP
         querySnapshot.forEach(doc => {
             const data = doc.data();
             const userIP = data.ipAddress;
-            const guestName = data.guestName || "Visitor";
+            let guestName = data.guestName || null;
 
-            // Count page views per user
-            if (!pageViews[userIP]) {
-                pageViews[userIP] = 0;
+            if (!groupedData[userIP]) {
+                groupedData[userIP] = {
+                    guestName: "Visitor",
+                    guestbookMessage: "None",
+                    contactMessage: "None",
+                    location: "N/A",
+                    pageViews: 0,
+                    viewedEntries: []
+                };
             }
-            pageViews[userIP] += data.viewed.length;
 
             // Match Guestbook Messages
             const guestbookEntry = guestbookData.find(entry => entry.userIP === userIP);
-            const guestbookMessage = guestbookEntry ? guestbookEntry.message : "None";
+            if (guestbookEntry) {
+                groupedData[userIP].guestbookMessage = guestbookEntry.message;
+                groupedData[userIP].guestName = guestbookEntry.name || groupedData[userIP].guestName;
+            }
 
             // Match Contact Messages
             const contactEntry = contactData.find(entry => entry.userIP === userIP);
-            const contactMessage = contactEntry ? contactEntry.message : "None";
+            if (contactEntry) {
+                groupedData[userIP].contactMessage = contactEntry.message;
+                groupedData[userIP].guestName = contactEntry.name || groupedData[userIP].guestName;
+            }
 
             // Process each viewed entry
             data.viewed.forEach(entry => {
-                const timeCategory = categorizeTime(entry.currentDate);
-                const mainRow = document.createElement("tr");
+                groupedData[userIP].pageViews++;
+                groupedData[userIP].viewedEntries.push(entry);
+                groupedData[userIP].location = entry.location ? 
+                    `${entry.location.city || 'Unknown'}, ${entry.location.state || 'Unknown'}, ${entry.location.country || 'Unknown'}` 
+                    : "N/A";
+            });
+        });
 
-                mainRow.innerHTML = `
-                    <td>${userIP || "N/A"}</td>
-                    <td>${guestName}</td>
-                    <td>${guestbookMessage}</td>
-                    <td>${contactMessage}</td>
-                    <td>${entry.location ? `${entry.location.city || 'Unknown'}, ${entry.location.state || 'Unknown'}, ${entry.location.country || 'Unknown'}` : "N/A"}</td>
-                    <td>${timeCategory}</td>
-                    <td>${pageViews[userIP]}</td>
-                    <td>${entry.timeOnPage.toFixed(2) || "0"}</td>
-                    <td>${entry.deviceType || "N/A"}</td>
-                    <td>${entry.browser || "N/A"}</td>
-                    <td>${entry.referral || "Direct"}</td>
-                `;
+        // Generate table rows
+        Object.keys(groupedData).forEach(userIP => {
+            const data = groupedData[userIP];
+            const mainRow = document.createElement("tr");
 
-                logsTableBody.appendChild(mainRow);
-                analyticsData.push({ ...data, guestbookMessage, contactMessage, timeCategory, pageViews: pageViews[userIP] });
+            mainRow.innerHTML = `
+                <td>${userIP}</td>
+                <td>${data.guestName}</td>
+                <td>${data.guestbookMessage}</td>
+                <td>${data.contactMessage}</td>
+                <td>${data.location}</td>
+                <td>${data.pageViews}</td>
+                <td>
+                    <button class="toggle-details" data-ip="${userIP}">Show Details</button>
+                </td>
+            `;
+
+            logsTableBody.appendChild(mainRow);
+
+            // Create hidden details row
+            const detailsRow = document.createElement("tr");
+            detailsRow.innerHTML = `
+                <td colspan="7">
+                    <div class="details-container" id="details-${userIP}" style="display: none;">
+                        ${data.viewedEntries.map(entry => `
+                            <div class="session-entry">
+                                <strong>Page:</strong> ${entry.page || "N/A"} <br>
+                                <strong>Time on Page:</strong> ${entry.timeOnPage.toFixed(2) || "0"}s <br>
+                                <strong>Device:</strong> ${entry.deviceType || "N/A"} <br>
+                                <strong>Browser:</strong> ${entry.browser || "N/A"} <br>
+                                <strong>Referral:</strong> ${entry.referral || "Direct"} <br>
+                                <strong>Screen Resolution:</strong> ${entry.screenWidth}x${entry.screenHeight} <br>
+                            </div>
+                        `).join("<hr>")}
+                    </div>
+                </td>
+            `;
+
+            logsTableBody.appendChild(detailsRow);
+            analyticsData.push(data);
+        });
+
+        // Attach event listeners to toggle details
+        document.querySelectorAll(".toggle-details").forEach(button => {
+            button.addEventListener("click", (e) => {
+                const ip = e.target.getAttribute("data-ip");
+                const detailsDiv = document.getElementById(`details-${ip}`);
+                if (detailsDiv.style.display === "none") {
+                    detailsDiv.style.display = "block";
+                    e.target.textContent = "Hide Details";
+                } else {
+                    detailsDiv.style.display = "none";
+                    e.target.textContent = "Show Details";
+                }
             });
         });
 
