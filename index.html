@@ -1413,7 +1413,7 @@ window.addEventListener('load', function() {
         ContactMe: 'Contact Me'
       };
       for (const [id, viewName] of Object.entries(mainNavLinks)) {
-        document.querySelector(`a[href="#${id}"]`).addEventListener('click', () => {
+        document.querySelector(`a[href="#${id}"]`)?.addEventListener('click', () => {
           if (id === 'about') {
             typeWriter();
           }
