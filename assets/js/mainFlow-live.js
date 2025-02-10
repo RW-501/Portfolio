@@ -102,7 +102,7 @@ function showToast(message, type = "info", duration = 3000) {
   // Auto-remove toast after duration
   setTimeout(() => {
       toast.style.animation = "fadeOut 0.3s ease-out";
-      setTimeout(() => toast.remove(), 300);
+    //  setTimeout(() => toast.remove(), 300);
   }, duration);
 
   // Append toast to container
