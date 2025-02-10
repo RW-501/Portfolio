@@ -432,7 +432,8 @@ if(!entriesDiv){
   return;
 }
     const guestbookRef = collection(db, `Guestbook`);
-    
+    const ipAddress = await getIPAddress();
+
     // Order by timestamp (most recent first)
     const querySnapshot = await getDocs(query(guestbookRef, orderBy("timestamp", "desc"))); 
 
@@ -452,7 +453,8 @@ if(!entriesDiv){
       const timeAgo = timestamp ? timeSincePost(timestamp) : "Unknown time";
 
       let controlPanel = "";
-      if (entry.userIP === userIP) {
+
+      if (entry.userIP === ipAddress) {
         // Show controls for the user who posted the message
         controlPanel = `
           <div class="message-controls">
