@@ -139,6 +139,15 @@ function startTyping() {
     if (Array.isArray(textSections) && textSections.length > 0) {
         const remove = document.getElementById("remove");
         remove.style.display = "none";
+        const text1 = document.getElementById("text1");
+        const text2 = document.getElementById("text2");
+        const text3 = document.getElementById("text3");
+        const text4 = document.getElementById("text4");
+
+        text1.innerHTML = ""; // ✅ Clear the section before typing starts
+        text2.innerHTML = ""; 
+        text3.innerHTML = ""; 
+        text4.innerHTML = ""; 
 
         typeWriter(textSections[0], "text1", () => {
             setTimeout(() => {
