@@ -506,7 +506,7 @@ window.loadEntries = loadEntries;
 loadEntries();
 
 
-// Function to make a message public
+// Function to make a message private
 async function makePrivate(postID) {
   try {
     const postRef = doc(db, "Guestbook", postID);
