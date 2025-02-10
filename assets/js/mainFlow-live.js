@@ -456,7 +456,7 @@ if(!entriesDiv){
         // Show controls for the user who posted the message
         controlPanel = `
           <div class="message-controls">
-            <button onclick="makePublic('${postID}')">Make Public</button>
+            <button onclick="makePrivate('${postID}')">Make Private</button>
             <button onclick="deleteMessage('${postID}')">Delete</button>
           </div>
         `;
@@ -507,19 +507,19 @@ loadEntries();
 
 
 // Function to make a message public
-async function makePublic(postID) {
+async function makePrivate(postID) {
   try {
     const postRef = doc(db, "Guestbook", postID);
     await updateDoc(postRef, {
-      public: true
+      public: false
     });
-    showToast("Your message is now public!", "success");
+    showToast("Your message is now private!", "success");
     loadEntries(); // Refresh guestbook
   } catch (error) {
-    console.error("Error making message public:", error);
+    console.error("Error making message private:", error);
   }
 }
-window.makePublic = makePublic;
+window.makePrivate = makePrivate;
 
 
 // Function to delete a message (change status to "deleted")
