@@ -95,7 +95,7 @@ function showToast(message, type = "info", duration = 3000) {
 
   // Close toast on button click
   closeButton.addEventListener("click", () => {
-      toast.style.animation = "fadeOut 0.3s ease-out";
+   //   toast.style.animation = "fadeOut 0.3s ease-out";
       setTimeout(() => toast.remove(), 300);
   });
 
