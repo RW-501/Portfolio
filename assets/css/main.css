@@ -2791,14 +2791,29 @@ img{
 
 
 @keyframes fadeGlow {
-	0% { opacity: 0.5; text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
-	50% { opacity: 1; text-shadow: 0 0 12px rgba(255, 255, 255, 0.8), 0 0 24px rgba(0, 123, 255, 0.6); }
-	100% { opacity: 0.5; text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
-  }
-  
-  .fade-glow {
-	animation: fadeGlow 2s infinite ease-in-out;
+    0% { 
+        opacity: 0.5; 
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); 
+        background-color: rgba(255, 255, 255, 0.175);
+    }
+    50% { 
+        opacity: 1; 
+        text-shadow: 0 0 12px rgba(255, 255, 255, 0.8), 
+                     0 0 24px rgba(0, 123, 255, 0.6); 
+        background-color: transparent;
+    }
+    100% { 
+        opacity: 0.5; 
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); 
+        background-color: rgba(255, 255, 255, 0.175);
+    }
+}
+
+/* Apply Animation */
+.glow-effect {
+    animation: fadeGlow 2s infinite alternate ease-in-out;
 	transition: transform 0.3s ease;
+	
   }
   
   
