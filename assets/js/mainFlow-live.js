@@ -88,21 +88,19 @@ function showToast(message, type = "info", duration = 3000) {
       color: white;
       font-size: 1.2rem;
       cursor: pointer;
-      position: absolute;
-      top: 8px;
-      right: 12px;
+
   `;
 
   // Close toast on button click
   closeButton.addEventListener("click", () => {
-   //   toast.style.animation = "fadeOut 0.3s ease-out";
+     toast.style.animation = "fadeOut 0.3s ease-out";
       setTimeout(() => toast.remove(), 300);
   });
 
   // Auto-remove toast after duration
   setTimeout(() => {
       toast.style.animation = "fadeOut 0.3s ease-out";
-    //  setTimeout(() => toast.remove(), 300);
+      setTimeout(() => toast.remove(), 300);
   }, duration);
 
   // Append toast to container
