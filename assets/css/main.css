@@ -2702,7 +2702,7 @@ img{
     justify-items: center;
     width: fit-content;
     margin: 1rem auto 2rem;
-    gap: 2%;
+    gap: 2rem;
 }
 
 .anonymousCheckboxArea,
