@@ -129,6 +129,23 @@ style.innerHTML = `
 document.head.appendChild(style);
 window.showToast = showToast;
 
+let startTime = new Date().getTime();
+let endTime = new Date().getTime();
+// Track when the visitor leaves the page
+function updateEndTime() {
+  endTime = new Date().getTime();
+}
+
+
+// Capture when the page is hidden (switching tabs or closing)
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") {
+      updateEndTime();
+  }
+});
+
+// Capture when the user closes or reloads the page
+window.addEventListener("beforeunload", updateEndTime);
 
 const ipAPI = 'https://api.ipify.org?format=json';
 const locationAPI = 'https://ipapi.co';
@@ -153,14 +170,16 @@ const getUserLocationByIP = async (ip) => {
 export async function logPageView(page) {
 const currentDate = getCurrentDate();
 const ipAddress = await getIPAddress();
-const startTime = new Date().getTime();
 const userAgent = navigator.userAgent;
 const deviceType = getDeviceType(userAgent);
 const referral = document.referrer || 'direct';
 const screenWidth = window.screen.width;
 const screenHeight = window.screen.height;
-const endTime = new Date().getTime();
-const timeOnPage = (endTime - startTime) / 1000;
+startTime = new Date().getTime();
+ // Wait until the user leaves before logging endTime
+ window.addEventListener("beforeunload", async () => {
+  endTime = new Date().getTime();
+  const timeOnPage = ((endTime - startTime) / 1000).toFixed(2);
 
 // Get location data based on IP address
 const locationData = await getUserLocationByIP(ipAddress);
@@ -206,8 +225,8 @@ try {
 } catch (error) {
   console.error("Error logging page view:", error);
 }
+});
 }
-
 
   // Get Current Date in MM/DD/YYYY Format
   function getCurrentDate() {
