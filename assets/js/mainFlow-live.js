@@ -462,7 +462,7 @@ if(!entriesDiv){
         `;
       }
 
-      if (entry.status === 'active' && entry.public != false   ) {
+      if (entry.status === 'active' && (entry.private === undefined || entry.private === false)) {
         // Append guestbook entry
         entriesDiv.innerHTML += `
           <div class="entry" style="border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; border-radius: 8px; background: #f9f9f9;">
@@ -511,7 +511,7 @@ async function makePrivate(postID) {
   try {
     const postRef = doc(db, "Guestbook", postID);
     await updateDoc(postRef, {
-      public: false
+      private: true
     });
     showToast("Your message is now private!", "success");
     loadEntries(); // Refresh guestbook
@@ -590,7 +590,7 @@ if(submitbtn) submitbtn.addEventListener("click", async (e) => {
         message,
         userIP,
         status: "active",
-        public: privateCheckbox.checked || true,
+        private: privateCheckbox.checked || false,
         timestamp: serverTimestamp(),
       });
       nameInput.value = ''; // Clear form inputs
