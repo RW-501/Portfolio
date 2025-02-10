@@ -451,7 +451,7 @@ if(!entriesDiv){
       const postID = doc.id;
       const timeAgo = timestamp ? timeSincePost(timestamp) : "Unknown time";
 
-      if (entry.status === 'active') {
+      if (entry.status === 'active' && entry.status === 'public'  ) {
         // Append guestbook entry
         entriesDiv.innerHTML += `
           <div class="entry" style="border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; border-radius: 8px; background: #f9f9f9;">
@@ -516,9 +516,13 @@ if(submitbtn) submitbtn.addEventListener("click", async (e) => {
   const name = sanitizeInput(anonymousCheckbox.checked ? "Anonymous" : nameInput.value.trim());
   const message = sanitizeInput(messageInput.value.trim());
   const userIP = await getIPAddress(); // Fetch user IP address
-  
+  const privateCheckbox = document.getElementById("privateCheckbox");
+
+
+
   let valid = true;
 
+  
   // Check if name and message are filled
   if (!name) {
     nameInput.style.borderColor = 'red'; // Highlight input with red border
@@ -543,6 +547,7 @@ if(submitbtn) submitbtn.addEventListener("click", async (e) => {
         message,
         userIP,
         status: "active",
+        public: privateCheckbox.checked,
         timestamp: serverTimestamp(),
       });
       nameInput.value = ''; // Clear form inputs
