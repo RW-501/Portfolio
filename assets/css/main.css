@@ -2696,6 +2696,10 @@ img{
   background-color: #f9fff9; /* Optional: Add a slightly different background color */
 }
 
+.message-controls {
+    display: flex;
+    gap: 2rem;
+}
 #checkBoxArea {
     display: flex;
     align-items: center;
