@@ -1417,6 +1417,41 @@ window.addEventListener('load', function() {
           logPageView(viewName);
         });
       }
+
+
+      const exitLinks = {
+    facebook: "https://www.facebook.com/Mr.RonWilson",
+    portfolio: "https://rw-501.github.io/Portfolio/",
+    imdb: "https://www.imdb.com/name/nm13820934/",
+    goldLakeMedia: "https://rw-501.github.io/GoldLakeMedia/",
+    maximusBrand: "https://maximusbrand.com/",
+    buyMeACoffee: "https://www.buymeacoffee.com/ron_dotdotdot",
+    linkedin: "https://www.linkedin.com/in/lrpinc/",
+    instagram: "https://www.instagram.com/ron_dot.dot/",
+    twitter: "https://x.com/LRPinc",
+    adminPanel: "https://rw-501.github.io/Portfolio/admin"
+};
+
+// Function to log exit clicks
+Object.entries(exitLinks).forEach(([viewName, url]) => {
+    const linkElement = document.querySelector(`a[href="${url}"]`);
+
+    if (linkElement) {
+        linkElement.addEventListener("click", () => {
+            logPageView(viewName);
+        });
+    } else {
+        console.warn(`No anchor tag found for: ${viewName} (${url})`);
+    }
+});
+
+
+
+
+
+
+
+
     });
     document.addEventListener('DOMContentLoaded', function() {
       // Contact form elements
