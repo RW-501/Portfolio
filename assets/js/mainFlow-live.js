@@ -52,7 +52,7 @@ function showToast(message, type = "info", duration = 3000) {
   const toast = document.createElement("div");
   toast.className = `toast-message ${type}`;
   toast.innerHTML = `
-      <i class="fas ${iconClass}"></i> </div>${message}</div>
+      <i class="fas ${iconClass}"></i> <div>${message}</div>
       <button class="toast-close">&times;</button>
   `;
 
