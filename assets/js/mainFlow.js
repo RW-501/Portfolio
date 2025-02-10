@@ -119,7 +119,8 @@ function typeWriter(text, elementId, callback) {
         console.error(`Element with ID "${elementId}" not found.`);
         return;  // If the element is not found, stop the function.
     }
-    
+    element.innerHTML = ""; // ✅ Clear the section before typing starts
+
     if (i < text.length) {
         element.innerHTML += text.charAt(i);
         i++;
