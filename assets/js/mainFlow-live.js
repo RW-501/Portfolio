@@ -451,6 +451,17 @@ if(!entriesDiv){
       const postID = doc.id;
       const timeAgo = timestamp ? timeSincePost(timestamp) : "Unknown time";
 
+      let controlPanel = "";
+      if (entry.userIP === userIP) {
+        // Show controls for the user who posted the message
+        controlPanel = `
+          <div class="message-controls">
+            <button onclick="makePublic('${postID}')">Make Public</button>
+            <button onclick="deleteMessage('${postID}')">Delete</button>
+          </div>
+        `;
+      }
+
       if (entry.status === 'active' && entry.public !== 'private'   ) {
         // Append guestbook entry
         entriesDiv.innerHTML += `
@@ -460,6 +471,7 @@ if(!entriesDiv){
               <span style="font-size: 0.9em; color: #777;">${timeAgo}</span>
             </div>
             <div class="guestbook-message">${sanitizedMessage}</div>
+          ${controlPanel}
           </div>
           ${entry.giftType && entry.public ? `
             <div class='gifts'>
@@ -494,8 +506,39 @@ window.loadEntries = loadEntries;
 loadEntries();
 
 
+// Function to make a message public
+async function makePublic(postID) {
+  try {
+    const postRef = doc(db, "Guestbook", postID);
+    await updateDoc(postRef, {
+      public: true
+    });
+    showToast("Your message is now public!", "success");
+    loadEntries(); // Refresh guestbook
+  } catch (error) {
+    console.error("Error making message public:", error);
+  }
+}
+window.makePublic = makePublic;
 
 
+// Function to delete a message (change status to "deleted")
+async function deleteMessage(postID) {
+  if (!confirm("Are you sure you want to delete this message?")) return;
+  
+  try {
+    const postRef = doc(db, "Guestbook", postID);
+    await updateDoc(postRef, {
+      status: "deleted"
+    });
+    showToast("Your message has been deleted.", "warning");
+    loadEntries(); // Refresh guestbook
+  } catch (error) {
+    console.error("Error deleting message:", error);
+  }
+}
+
+window.deleteMessage = deleteMessage;
 
 
 
