@@ -2696,8 +2696,18 @@ img{
   background-color: #f9fff9; /* Optional: Add a slightly different background color */
 }
 
+#checkBoxArea {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    width: fit-content;
+    margin: 1rem auto 2rem;
 
-.anonymousCheckboxArea {
+}
+
+.anonymousCheckboxArea,
+
+.privateCheckboxArea {
     display: flex;
     align-items: center;
     justify-items: center;
