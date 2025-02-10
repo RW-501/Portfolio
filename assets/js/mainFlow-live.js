@@ -462,7 +462,7 @@ if(!entriesDiv){
         `;
       }
 
-      if (entry.status === 'active' && entry.public !== 'private'   ) {
+      if (entry.status === 'active' && entry.public !== true   ) {
         // Append guestbook entry
         entriesDiv.innerHTML += `
           <div class="entry" style="border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; border-radius: 8px; background: #f9f9f9;">
