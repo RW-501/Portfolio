@@ -1400,17 +1400,13 @@ window.addEventListener('load', function() {
         about: 'About Me',
         work: 'See Portfolio',
         bizz: 'View Business',
-        linkedin: 'ViewLinkedIn',
         projects: 'Active Projects',
         messages: 'Say Hello',
         technoob: 'TechNoob Page',
         ContactMe: 'Contact Me'
       };
       for (const [id, viewName] of Object.entries(mainNavLinks)) {
-        const selector = id === 'linkedin' ?
-          'a[href*="linkedin.com"]' :
-          `a[href="#${id}"]`;
-        document.querySelector(selector).addEventListener('click', () => {
+        document.querySelector(`a[href="#${id}"]`).addEventListener('click', () => {
           if (id === 'about') {
             typeWriter();
           }
