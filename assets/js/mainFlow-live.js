@@ -9,6 +9,14 @@ import {
 
 import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging.js";
 
+
+
+importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js');
+
+importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging.js');
+
+
+
 // Initialize Firebase and Firestore
 const firebaseConfig = {
   apiKey: "AIzaSyCsitF_YPDGnMwK0xIk2tUgQXJnxS2HN_o",
@@ -548,10 +556,6 @@ async function deleteMessage(postID) {
 }
 
 window.deleteMessage = deleteMessage;
-
-
-
-
 
 
 
