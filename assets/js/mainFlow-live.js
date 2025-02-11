@@ -11,9 +11,6 @@ import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/9.0.0
 
 
 
-importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js');
-
-importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging.js');
 
 
 
@@ -557,7 +554,7 @@ async function deleteMessage(postID) {
 
 window.deleteMessage = deleteMessage;
 
-
+/* 
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/Portfolio/assets/js/mainFlow-live.js')
@@ -630,7 +627,10 @@ function sendFCMNotification(message) {
     .catch(error => {
       console.error('Error sending notification:', error);
     });
-}
+} */
+
+
+
 const submitbtn= document.getElementById("submit-btn");
 
 // Handle form submission
@@ -692,7 +692,7 @@ if(submitbtn) submitbtn.addEventListener("click", async (e) => {
               name: `${name}`
                 };
 
-          sendFCMNotification(newMessage);
+      ///    sendFCMNotification(newMessage);
      
       anonymousCheckbox.checked = false; // Reset checkbox
       await loadEntries(); // Refresh guestbook entries
