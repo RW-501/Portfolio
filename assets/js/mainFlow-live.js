@@ -559,15 +559,23 @@ window.deleteMessage = deleteMessage;
 
 
 
-
 // Example of OAuth 2.0 response (you received this in the previous step)
 const oauthAccessToken = "ya29.a0AXeO80SO4iW8MxvMweIXwzY1Ea8Zm82dc5lUxc0eI44504wdeuM90qPYTGzi97jSMM-jC7C0HIuSVoK4F5ObHi17mgdM1SFGFntEfJtD2HwGtw7kwVlU0Hvc8c9exzVVKYJBosfXgKk7P70jQfeuHxzc9kBbeANxGGeJy-vTaCgYKAcMSARMSFQHGX2Mi2I1EnIAYkFdiRkImm5xaiA0175";  // Use the actual access token you received
 
+// Initialize Firebase and Firebase Messaging
+const messaging = getMessaging(app);
 
-// Request permission to receive notifications
-messaging.requestPermission()
-  .then(() => {
-    return messaging.getToken({ vapidKey: 'BLV92JFFuX1LChdVIGa4ZG49NpngM_Z7RRp-brP7ShmGbNDx9dW8EtdU69vDpM_C-JhMdIBGJyg2E9-R9e6oKSo' });  // Use your VAPID key here
+// Request permission to receive notifications using the Notification API
+Notification.requestPermission()
+  .then((permission) => {
+    if (permission === "granted") {
+      console.log("Notification permission granted.");
+
+      // After permission is granted, get the FCM token
+      return messaging.getToken({ vapidKey: 'BLV92JFFuX1LChdVIGa4ZG49NpngM_Z7RRp-brP7ShmGbNDx9dW8EtdU69vDpM_C-JhMdIBGJyg2E9-R9e6oKSo' });  // Use your VAPID key here
+    } else {
+      console.log("Notification permission denied.");
+    }
   })
   .then((fcmDeviceToken) => {
     if (fcmDeviceToken) {
