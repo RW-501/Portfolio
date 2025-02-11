@@ -5,7 +5,9 @@ import {
   getFirestore, serverTimestamp,orderBy,  collection, query, where, getDocs, doc, updateDoc, addDoc, arrayUnion 
 } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
 
-import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-messaging.js";
+//import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-messaging.js";
+
+import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging.js";
 
 // Initialize Firebase and Firestore
 const firebaseConfig = {
@@ -20,6 +22,11 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
+// Initialize Firebase Messaging
+const messaging = getMessaging(app);
+
+
 
 function showToast(message, type = "info", duration = 3000) {
   // Define icon types
@@ -555,8 +562,7 @@ window.deleteMessage = deleteMessage;
 
 // Example of OAuth 2.0 response (you received this in the previous step)
 const oauthAccessToken = "ya29.a0AXeO80SO4iW8MxvMweIXwzY1Ea8Zm82dc5lUxc0eI44504wdeuM90qPYTGzi97jSMM-jC7C0HIuSVoK4F5ObHi17mgdM1SFGFntEfJtD2HwGtw7kwVlU0Hvc8c9exzVVKYJBosfXgKk7P70jQfeuHxzc9kBbeANxGGeJy-vTaCgYKAcMSARMSFQHGX2Mi2I1EnIAYkFdiRkImm5xaiA0175";  // Use the actual access token you received
-// Initialize Firebase Messaging
-const messaging = getMessaging(app);
+
 
 // Request permission to receive notifications
 messaging.requestPermission()
