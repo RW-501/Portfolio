@@ -119,14 +119,16 @@
             "name": "Web Developer & Video Editor",
             "description": "Specializes in building dynamic websites, job boards, and video content creation.",
             "estimatedSalary": {
-              "@type": "MonetaryAmount",
+              "@type": "MonetaryAmountDistribution",
               "currency": "USD",
-              "value": {
-                "@type": "QuantitativeValue",
-                "value": "75000",
-                "unitText": "YEAR"
-              }
-            },
+              "duration": "P1Y",
+              "percentile10": 50000,
+              "percentile25": 65000,
+              "median": 75000,
+              "percentile75": 90000,
+              "percentile90": 120000
+            }
+            ,
             "occupationLocation": {
               "@type": "Place",
               "address": {
