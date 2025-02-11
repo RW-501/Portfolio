@@ -553,10 +553,8 @@ window.deleteMessage = deleteMessage;
 
 
 
-
-
 // Example of OAuth 2.0 response (you received this in the previous step)
-const accessToken = "ya29.a0AXeO80SO4iW8MxvMweIXwzY1Ea8Zm82dc5lUxc0eI44504wdeuM90qPYTGzi97jSMM-jC7C0HIuSVoK4F5ObHi17mgdM1SFGFntEfJtD2HwGtw7kwVlU0Hvc8c9exzVVKYJBosfXgKk7P70jQfeuHxzc9kBbeANxGGeJy-vTaCgYKAcMSARMSFQHGX2Mi2I1EnIAYkFdiRkImm5xaiA0175";  // Use the actual access token you received
+const oauthAccessToken = "ya29.a0AXeO80SO4iW8MxvMweIXwzY1Ea8Zm82dc5lUxc0eI44504wdeuM90qPYTGzi97jSMM-jC7C0HIuSVoK4F5ObHi17mgdM1SFGFntEfJtD2HwGtw7kwVlU0Hvc8c9exzVVKYJBosfXgKk7P70jQfeuHxzc9kBbeANxGGeJy-vTaCgYKAcMSARMSFQHGX2Mi2I1EnIAYkFdiRkImm5xaiA0175";  // Use the actual access token you received
 // Initialize Firebase Messaging
 const messaging = getMessaging(app);
 
@@ -565,11 +563,11 @@ messaging.requestPermission()
   .then(() => {
     return messaging.getToken({ vapidKey: 'BLV92JFFuX1LChdVIGa4ZG49NpngM_Z7RRp-brP7ShmGbNDx9dW8EtdU69vDpM_C-JhMdIBGJyg2E9-R9e6oKSo' });  // Use your VAPID key here
   })
-  .then((accessToken) => {
-    if (accessToken) {
-      console.log("FCM Device Token for you:", accessToken);
-      // Store your token (you can store it in Firestore or a variable)
-      localStorage.setItem('myFCMToken', accessToken);  // Store in localStorage (for example)
+  .then((fcmDeviceToken) => {
+    if (fcmDeviceToken) {
+      console.log("FCM Device Token for you:", fcmDeviceToken);
+      // Store your device token (you can store it in Firestore or a variable)
+      localStorage.setItem('myFCMToken', fcmDeviceToken);  // Store in localStorage (for example)
     } else {
       console.log("No FCM token available.");
     }
@@ -582,9 +580,11 @@ messaging.requestPermission()
 function sendFCMNotification(message) {
   const fcmEndpoint = 'https://fcm.googleapis.com/v1/projects/ron-main/messages:send';
   
+  const fcmDeviceToken = localStorage.getItem('myFCMToken');  // Retrieve your device token from localStorage
+  
   const messageBody = {
     message: {
-      token: accessToken, // Replace with the token you saved earlier (the target device token)
+      token: fcmDeviceToken,  // Use the FCM device token for the target device
       notification: {
         title: 'New Guestbook Message!',
         body: `New message from ${message.name}: ${message.message}`,
@@ -595,7 +595,7 @@ function sendFCMNotification(message) {
   fetch(fcmEndpoint, {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${accessToken}`, // Use the access token for authentication
+      'Authorization': `Bearer ${oauthAccessToken}`,  // Use the OAuth access token for authentication
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(messageBody),
