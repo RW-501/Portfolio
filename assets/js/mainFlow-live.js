@@ -694,10 +694,6 @@ if(submitbtn) submitbtn.addEventListener("click", async (e) => {
 
 
 
-// Initialize FCM permissions
-requestFCMPermission();
-
-
 
   // Add an event listener to the "Send Flowers" button
   const sendFlowersButton = document.getElementById("send-flowers");
