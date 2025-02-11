@@ -560,16 +560,14 @@ window.deleteMessage = deleteMessage;
 
 
 // Example of OAuth 2.0 response (you received this in the previous step)
-const oauthAccessToken = "ya29.a0AXeO80SO4iW8MxvMweIXwzY1Ea8Zm82dc5lUxc0eI44504wdeuM90qPYTGzi97jSMM-jC7C0HIuSVoK4F5ObHi17mgdM1SFGFntEfJtD2HwGtw7kwVlU0Hvc8c9exzVVKYJBosfXgKk7P70jQfeuHxzc9kBbeANxGGeJy-vTaCgYKAcMSARMSFQHGX2Mi2I1EnIAYkFdiRkImm5xaiA0175";  // Use the actual access token you received
-
 // Request permission to receive notifications using the Notification API
 Notification.requestPermission()
   .then((permission) => {
     if (permission === "granted") {
       console.log("Notification permission granted.");
 
-      // After permission is granted, get the FCM token
-      return messaging.getToken({ vapidKey: 'BLV92JFFuX1LChdVIGa4ZG49NpngM_Z7RRp-brP7ShmGbNDx9dW8EtdU69vDpM_C-JhMdIBGJyg2E9-R9e6oKSo' });  // Use your VAPID key here
+      // After permission is granted, get the FCM token using the modular syntax
+      return getToken(messaging, { vapidKey: 'BLV92JFFuX1LChdVIGa4ZG49NpngM_Z7RRp-brP7ShmGbNDx9dW8EtdU69vDpM_C-JhMdIBGJyg2E9-R9e6oKSo' });  // Use your VAPID key here
     } else {
       console.log("Notification permission denied.");
     }
@@ -577,8 +575,8 @@ Notification.requestPermission()
   .then((fcmDeviceToken) => {
     if (fcmDeviceToken) {
       console.log("FCM Device Token for you:", fcmDeviceToken);
-      // Store your device token (you can store it in Firestore or a variable)
-      localStorage.setItem('myFCMToken', fcmDeviceToken);  // Store in localStorage (for example)
+      // Store the device token (e.g., in localStorage)
+      localStorage.setItem('myFCMToken', fcmDeviceToken);
     } else {
       console.log("No FCM token available.");
     }
@@ -590,9 +588,9 @@ Notification.requestPermission()
 // Send FCM Notification
 function sendFCMNotification(message) {
   const fcmEndpoint = 'https://fcm.googleapis.com/v1/projects/ron-main/messages:send';
-  
-  const fcmDeviceToken = localStorage.getItem('myFCMToken');  // Retrieve your device token from localStorage
-  
+
+  const fcmDeviceToken = localStorage.getItem('myFCMToken');  // Retrieve the device token from localStorage
+
   const messageBody = {
     message: {
       token: fcmDeviceToken,  // Use the FCM device token for the target device
@@ -620,7 +618,6 @@ function sendFCMNotification(message) {
       console.error('Error sending notification:', error);
     });
 }
-
 const submitbtn= document.getElementById("submit-btn");
 
 // Handle form submission
