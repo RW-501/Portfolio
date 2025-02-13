@@ -428,7 +428,8 @@ body {
         </ul>
 
         <ul class="main-nav">
-          <li><a href="https://www.upwork.com/freelancers/ronwilson411media" title="Hire Ronald Wilson II on UpWork">Hire Me</a></li> <!-- LinkedIn profile link with SEO title -->
+          <li><a href="#hireOnUpWork" title="Hire Ronald Wilson II on UpWork">Hire Me</a></li> <!-- LinkedIn profile link with SEO title -->
+          <li hidden><a href="https://www.upwork.com/freelancers/ronwilson411media" title="Hire Ronald Wilson II on UpWork">Hire Me</a></li> <!-- LinkedIn profile link with SEO title -->
         </ul>
       </nav>
     </header>
@@ -1457,7 +1458,8 @@ window.addEventListener('load', function() {
         projects: 'Active Projects',
         messages: 'Say Hello',
         technoob: 'TechNoob Page',
-        ContactMe: 'Contact Me'
+        ContactMe: 'Contact Me',
+        hireOnUpWork: 'Hire On UpWork'
       };
       for (const [id, viewName] of Object.entries(mainNavLinks)) {
         document.querySelector(`a[href="#${id}"]`)?.addEventListener('click', () => {
