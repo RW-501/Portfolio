@@ -431,21 +431,21 @@ function clearCache() {
         const guestbookData = await fetchDataWithCache("guestbookData", fetchGuestbookMessages);
         const contactData = await fetchDataWithCache("contactData", fetchContactMessages);
 
-        // Group data by IP
         querySnapshot.forEach(doc => {
             const data = doc.data();
             const userIP = data.ipAddress;
-            const guestDate = data.currentDate;
-            let guestName = data.guestName || null;
+            const guestDate = data.currentDate ? new Date(data.currentDate).toLocaleDateString() : "N/A"; // Ensure valid date format
+            let guestName = data.guestName || "Visitor";
 
             if (!groupedData[userIP]) {
                 groupedData[userIP] = {
-                    guestName: "Visitor",
+                    guestName,
                     guestbookMessage: "None",
                     contactMessage: "None",
                     location: "N/A",
                     pageViews: 0,
-                    viewedEntries: []
+                    viewedEntries: [],
+                    currentDate: guestDate // Store date properly
                 };
             }
 
@@ -480,7 +480,7 @@ function clearCache() {
 
             mainRow.innerHTML = `
                 <td>${userIP}</td>
-                <td>${guestDate}</td>
+                <td>${data.currentDate}</td>
                 <td>${data.guestName}</td>
                 <td>${data.guestbookMessage}</td>
                 <td>${data.contactMessage}</td>
@@ -516,21 +516,6 @@ function clearCache() {
             analyticsData.push(data);
         });
 
-        // Attach event listeners to toggle details
-        document.querySelectorAll(".toggle-details").forEach(button => {
-            button.addEventListener("click", (e) => {
-                const ip = e.target.getAttribute("data-ip");
-                const detailsDiv = document.getElementById(`details-${ip}`);
-                if (detailsDiv.style.display === "none") {
-                    detailsDiv.style.display = "block";
-                    e.target.textContent = "Hide Details";
-                } else {
-                    detailsDiv.style.display = "none";
-                    e.target.textContent = "Show Details";
-                }
-            });
-        });
-
         localStorage.setItem("analyticsData", JSON.stringify(analyticsData));
         resolve(analyticsData);
     });
@@ -540,9 +525,10 @@ function clearCache() {
 function categorizeTime(dateString) {
     if (!dateString) return "Unknown";
 
-    const dateParts = dateString.split("/");
-    const currentDate = new Date(`${dateParts[2]}-${dateParts[0]}-${dateParts[1]}`);
-    const hours = currentDate.getHours();
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return "Unknown"; // Check if date is valid
+
+    const hours = date.getHours();
 
     if (hours >= 5 && hours < 12) return "Morning";
     if (hours >= 12 && hours < 17) return "Afternoon";
@@ -556,7 +542,7 @@ document.getElementById("sortBy").addEventListener("change", (event) => {
 
     analyticsData.sort((a, b) => {
         if (sortBy === "date") {
-            return new Date(a.currentDate) - new Date(b.currentDate);
+            return new Date(b.currentDate) - new Date(a.currentDate);
         } else if (sortBy === "timeOnPage") {
             return b.timeOnPage - a.timeOnPage;
         } else if (sortBy === "location") {
