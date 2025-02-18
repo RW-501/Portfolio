@@ -258,6 +258,7 @@
                 <thead>
                     <tr>
                         <th>IP Address</th>
+                        <th>Date</th>
                         <th>Guest Name</th>
                         <th>Guestbook Message</th>
                         <th>Contact Message</th>
@@ -434,6 +435,7 @@ function clearCache() {
         querySnapshot.forEach(doc => {
             const data = doc.data();
             const userIP = data.ipAddress;
+            const guestDate = data.currentDate;
             let guestName = data.guestName || null;
 
             if (!groupedData[userIP]) {
@@ -478,6 +480,7 @@ function clearCache() {
 
             mainRow.innerHTML = `
                 <td>${userIP}</td>
+                <td>${guestDate}</td>
                 <td>${data.guestName}</td>
                 <td>${data.guestbookMessage}</td>
                 <td>${data.contactMessage}</td>
